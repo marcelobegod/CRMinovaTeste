@@ -1,5 +1,5 @@
 <div
-  class="bg-white rounded shadow-sm p-3 h-100 w-100" style="box-sizing: border-box;"
+  class="bg-white rounded shadow-sm p-3 d-flex flex-column" style="height: 100%; overflow-y: auto;"
 >
   <h5 class="mb-3">{{ title }}</h5>
   <app-card *ngFor="let card of cards" [card]="card"></app-card>

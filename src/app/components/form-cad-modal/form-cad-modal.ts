@@ -2,6 +2,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
+import { Card } from '../../shared/models/card.model';
 
 @Component({
   selector: 'form-cad-modal',
@@ -15,7 +16,8 @@ import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
   templateUrl: './form-cad-modal.html'
 })
 export class FormCadModalComponent {
-  @Output() criarCard = new EventEmitter<any>();
+  @Output() criarCard = new EventEmitter<Card>();
+
   cadastroForm: FormGroup;
   mostrarModal = false;
   mostrarMaisInfos = false;
@@ -46,17 +48,17 @@ export class FormCadModalComponent {
   }
 
   onSubmit() {
-    if (this.cadastroForm.valid) {
-      const novoCard = {
-        negocio: this.cadastroForm.value.negocio,
-        nome: this.cadastroForm.value.nome,
-        servicoDesejado: this.cadastroForm.value.servicoDesejado,
-        valorNegocio: this.cadastroForm.value.valorNegocio || 'R$ 0,00',
-        criadoPor: 'Usuário Logado' // <- Aqui depois você pode trocar pelo usuário real logado
-      };
+  if (this.cadastroForm.valid) {
+    const novoCard: Card = {
+      negocio: this.cadastroForm.value.negocio,
+      nome: this.cadastroForm.value.nome,
+      servicoDesejado: this.cadastroForm.value.servicoDesejado,
+      valorNegocio: this.cadastroForm.value.valorNegocio || 'R$ 0,00',
+      criadoPor: 'Usuário Logado'
+    };
 
-      this.criarCard.emit(novoCard);
-      this.fecharModal();
-    }
+    this.criarCard.emit(novoCard);
+    this.fecharModal();
+  }
   }
 }

@@ -42,8 +42,9 @@ export class HomeComponent {
   }
 
   onNovoCard(card: Card) {
-    this.colunas[0].cards.push(card); // Adiciona à coluna "Contato Inicial"
-  }
+  this.colunas[0].cards.push(card);
+}
+
 
   avancarColuna() {
     if (this.colunaVisivel < this.colunas.length - 1) {

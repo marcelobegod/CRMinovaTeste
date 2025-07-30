@@ -8,24 +8,32 @@
   border-bottom: 1px solid #dee2e6;
   display: flex;
   align-items: center;
-  justify-content: space-between; /* alinhamento do botão e setas */
+  justify-content: space-between;
   padding: 0 1rem;
 }
 
-.row.gx-3 {
+/* Rola somente dentro da área de colunas */
+.colunas-scrollable {
+  height: calc(100vh - 112px); /* 56px navbar + 56px linha-sticky */
+  overflow-x: auto;
+  overflow-y: hidden;
+  margin: 0;
+  padding: 0 1rem;
+  display: flex;
   flex-wrap: nowrap;
+  box-sizing: border-box;
 }
 
+/* Cada coluna responsiva */
 .col-12 {
-  min-width: 320px; /* cabe em celulares */
-  max-width: 100%;   /* nunca passa da tela */
-  flex: 1 0 320px;   /* grow, shrink, basis */
+  min-width: 320px;
+  max-width: 100%;
+  flex: 1 0 320px;
+  box-sizing: border-box;
 }
-
 
 @media (min-width: 768px) {
   .col-md {
     min-width: 240px;
   }
 }
-

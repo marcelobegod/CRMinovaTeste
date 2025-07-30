@@ -1,31 +1,26 @@
-<!-- Linha fixa abaixo do navbar -->
+<!-- Modal -->
+<form-cad-modal #modal (criarCard)="onNovoCard($event)"></form-cad-modal>
+
+<!-- Barra com botão -->
 <div class="linha-sticky">
   <div>
-    <button type="button" class="btn btn-success" (click)="abrirModal()">Criar Negócio</button>
+    <button class="btn btn-success" (click)="abrirModal()">Criar Negócio</button>
   </div>
-  <!-- Setas visíveis apenas em telas pequenas -->
   <div class="d-md-none">
     <button class="btn btn-outline-secondary me-1" (click)="voltarColuna()" [disabled]="colunaVisivel === 0">←</button>
     <button class="btn btn-outline-secondary" (click)="avancarColuna()" [disabled]="colunaVisivel === colunas.length - 1">→</button>
   </div>
 </div>
 
-<!-- Modal standalone -->
-<form-cad-modal #modal (criarCard)="onNovoCard($event)"></form-cad-modal>
-
-
-<!-- Container com as colunas -->
-<div class="row gx-3 overflow-auto">
-  <!-- Desktop: mostrar todas | Mobile: mostrar só uma com base no índice -->
-  <div
-    class="col-12 col-md"
-    *ngFor="let coluna of colunas; let i = index"
-    [class.d-none]="isMobile && i !== colunaVisivel"
-  >
-    <app-column [title]="coluna.titulo" [cards]="coluna.cards"></app-column>
+<!-- Área que rola -->
+<div class="conteudo-scroll">
+  <div class="row gx-3 flex-nowrap">
+    <div
+      class="col-12 col-md"
+      *ngFor="let coluna of colunas; let i = index"
+      [class.d-none]="isMobile && i !== colunaVisivel"
+    >
+      <app-column [title]="coluna.titulo" [cards]="coluna.cards"></app-column>
+    </div>
   </div>
-</div>
-
-<div class="container-fluid mt-4">
-  <!-- Conteúdo da home aqui -->
 </div>
