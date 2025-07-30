@@ -1,0 +1,49 @@
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+  <div class="container-fluid d-flex flex-wrap justify-content-between">
+
+    <!-- Logo -->
+    <div class="order-2 flex-grow-1 d-flex justify-content-left">
+      <a class="navbar-brand" routerLink="/">
+        <span class="logo-text">CRMinova</span>
+        <img src="assets/logo-mini.png" class="logo-icon" alt="Logo" />
+      </a>
+    </div>
+
+    <!-- Campo de busca -->
+    <div class="order-2 flex-grow-1 d-flex justify-content-center ">
+      <div class="search-container w-100">
+        <app-search (onSearch)="executarBusca($event)"></app-search>
+      </div>
+    </div>
+
+    <!-- Botão hamburguer (visível apenas no mobile) -->
+  <button
+    class="navbar-toggler order-3 d-lg-none"
+    type="button"
+    data-bs-toggle="collapse"
+    data-bs-target="#navbarNav"
+    aria-controls="navbarNav"
+    aria-expanded="false"
+    aria-label="Toggle navigation"
+  >
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+<!-- Menu de navegação -->
+<div class="collapse navbar-collapse order-3 justify-content-lg-end" id="navbarNav">
+  <ul class="navbar-nav ms-auto text-end">
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/sobre" routerLinkActive="active">Sobre</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/contato" routerLinkActive="active">Contato</a>
+    </li>
+  </ul>
+</div>
+
+
+  </div>
+</nav>

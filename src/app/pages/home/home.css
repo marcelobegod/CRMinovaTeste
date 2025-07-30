@@ -1,0 +1,31 @@
+.linha-sticky {
+  height: 56px;
+  width: 100%;
+  position: sticky;
+  top: 56px;
+  z-index: 1020;
+  background-color: #abaeb1;
+  border-bottom: 1px solid #dee2e6;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* alinhamento do botão e setas */
+  padding: 0 1rem;
+}
+
+.row.gx-3 {
+  flex-wrap: nowrap;
+}
+
+.col-12 {
+  min-width: 320px; /* cabe em celulares */
+  max-width: 100%;   /* nunca passa da tela */
+  flex: 1 0 320px;   /* grow, shrink, basis */
+}
+
+
+@media (min-width: 768px) {
+  .col-md {
+    min-width: 240px;
+  }
+}
+

@@ -1,12 +1,12 @@
-import { Component, signal } from '@angular/core';
+import { FooterComponent } from './shared/footer/footer';
+import { NavbarComponent } from './shared/navbar/navbar';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  standalone: true,
+  imports: [RouterOutlet, FooterComponent, NavbarComponent],
   templateUrl: './app.html',
-  styleUrl: './app.scss'
 })
-export class App {
-  protected readonly title = signal('CRMinova');
-}
+export class AppComponent {}

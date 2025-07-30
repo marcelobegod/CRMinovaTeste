@@ -1,0 +1,112 @@
+<div class="modal fade" [class.show]="mostrarModal" [style.display]="mostrarModal ? 'block' : 'none'"
+  style="background-color: rgba(0,0,0,0.5);" tabindex="-1" role="dialog">
+
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Criar negócio</h5>
+        <button type="button" class="btn-close" aria-label="Fechar" (click)="fecharModal()"></button>
+      </div>
+
+      <form [formGroup]="cadastroForm" (ngSubmit)="onSubmit()">
+        <div class="modal-body">
+
+          <!-- Título do Negócio -->
+          <div class="mb-3">
+            <label for="negocio" class="form-label">Título do Negócio</label>
+            <input id="negocio" class="form-control" type="text" formControlName="negocio" />
+            <div *ngIf="cadastroForm.get('negocio')?.invalid && cadastroForm.get('negocio')?.touched"
+              class="text-danger">
+              <span *ngIf="cadastroForm.get('negocio')?.errors?.['required']">O título do negócio é obrigatório.</span>
+              <span *ngIf="cadastroForm.get('negocio')?.errors?.['minlength']">Mínimo 2 caracteres.</span>
+            </div>
+          </div>
+
+          <!-- Nome -->
+          <div class="mb-3">
+            <label for="nome" class="form-label">Nome do Cliente</label>
+            <input id="nome" class="form-control" type="text" formControlName="nome" />
+            <div *ngIf="cadastroForm.get('nome')?.invalid && cadastroForm.get('nome')?.touched" class="text-danger">
+              <span *ngIf="cadastroForm.get('nome')?.errors?.['required']">O nome é obrigatório.</span>
+              <span *ngIf="cadastroForm.get('nome')?.errors?.['minlength']">Mínimo 3 caracteres.</span>
+            </div>
+          </div>
+
+          <!-- Email -->
+          <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input id="email" class="form-control" type="email" formControlName="email" />
+          </div>
+
+          <!-- Telefone -->
+          <div class="mb-3">
+            <label for="telefone" class="form-label">Telefone</label>
+            <input id="telefone" class="form-control" type="text" formControlName="telefone" mask="(00) 00000-0000"
+              placeholder="(11) 91234-5678" />
+            <div *ngIf="cadastroForm.get('telefone')?.invalid && cadastroForm.get('telefone')?.touched"
+              class="text-danger">
+              <span *ngIf="cadastroForm.get('telefone')?.errors?.['required']">O telefone é obrigatório.</span>
+            </div>
+          </div>
+
+          <!-- Serviço Desejado -->
+          <div class="mb-3">
+            <label for="servicoDesejado" class="form-label">Serviço Desejado</label>
+            <input id="servicoDesejado" class="form-control" type="text" formControlName="servicoDesejado" />
+          </div>
+
+          <!-- Botão para mostrar mais campos -->
+          <div class="mb-3">
+            <button type="button" class="btn btn-link text-primary p-0" (click)="mostrarMaisInfos = !mostrarMaisInfos">
+              <strong>+ Preencher mais informações</strong>
+            </button>
+          </div>
+
+          <!-- Campos extras -->
+          <div *ngIf="mostrarMaisInfos">
+            <!-- Endereço -->
+            <div class="mb-3">
+              <label for="endereco" class="form-label">Endereço</label>
+              <input id="endereco" class="form-control" type="text" formControlName="endereco" />
+            </div>
+
+            <!-- CPF ou CNPJ -->
+            <div class="mb-3">
+              <label for="cpfCnpj" class="form-label">CPF/CNPJ</label>
+              <input id="cpfCnpj" class="form-control" type="text" formControlName="cpfCnpj"
+                mask="000.000.000-00||00.000.000/0000-00" placeholder="Digite CPF ou CNPJ" />
+            </div>
+
+
+
+            <!-- Valor do Negócio -->
+            <div class="mb-3">
+              <label for="valorNegocio" class="form-label">Valor do Negócio</label>
+              <input id="valorNegocio" class="form-control" type="text" formControlName="valorNegocio"
+                mask="separator.2" thousandSeparator="." decimalMarker="," prefix="R$ " />
+            </div>
+
+            <!-- Contato Inicial -->
+            <div class="mb-3">
+              <label for="contatoInicial" class="form-label">Contato Inicial</label>
+              <select id="contatoInicial" class="form-select" formControlName="contatoInicial">
+                <option value="">Selecione</option>
+                <option value="WhatsApp">WhatsApp</option>
+                <option value="Ligação">Ligação</option>
+                <option value="Email">Email</option>
+                <option value="Instagram">Instagram</option>
+                <option value="Indicação">Indicação</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="fecharModal()">Cancelar</button>
+          <button type="submit" class="btn btn-primary" [disabled]="cadastroForm.invalid">Salvar</button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,88 @@
+/* Estiliza o link ativo */
+.nav-link.active {
+  font-weight: bold;
+}
+
+/* Campo de busca centralizado */
+.search-container {
+  max-width: 500px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Esconde o ícone e mostra o texto da logo por padrão */
+.logo-icon {
+  display: none;
+  width: 20px; /* ajuste conforme necessário */
+  height: auto;
+}
+
+.logo-text {
+  display: inline;
+}
+
+/* Breakpoints modernos */
+
+/* Telas < 1200px */
+@media (max-width: 1199.98px) {
+  .search-container {
+    max-width: 400px;
+  }
+}
+
+/* Telas < 992px */
+@media (max-width: 991.98px) {
+  .search-container {
+    max-width: 350px;
+  }
+}
+
+/* Telas < 768px */
+@media (max-width: 767.98px) {
+  .search-container {
+    max-width: 300px;
+  }
+}
+
+/* Telas < 579px */
+@media (max-width: 579.00px) {
+  .search-container {
+    max-width: 240px;
+  }
+
+  .logo-text {
+    display: none;
+  }
+
+  .logo-icon {
+    display: inline-block;
+  }
+}
+
+
+/* Telas < 576px (celulares padrão) */
+@media (max-width: 575.98px) {
+  .search-container {
+    max-width: 240px;
+  }
+
+  .logo-text {
+    display: none;
+  }
+
+  .logo-icon {
+    display: inline-block;
+  }
+}
+
+/* Telas bem pequenas */
+@media (max-width: 399.98px) {
+  .search-container {
+    max-width: 200px;
+  }
+}
+
+
+
+
+

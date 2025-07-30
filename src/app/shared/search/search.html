@@ -1,0 +1,17 @@
+<form class="d-flex" (ngSubmit)="buscar()" role="search">
+  <input
+    class="form-control me-2"
+    [ngClass]="{ 'form-control-sm': small }"
+    type="search"
+    placeholder="Pesquisar..."
+    [(ngModel)]="termo"
+    name="termo"
+  >
+  <button
+    class="btn btn-outline-light"
+    [ngClass]="{ 'btn-sm': small }"
+    type="submit"
+  >
+    <i class="bi bi-search"></i>
+  </button>
+</form>
