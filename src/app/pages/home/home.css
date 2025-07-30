@@ -31,8 +31,8 @@
 .coluna-wrapper {
   display: flex;
   flex-direction: column;
-  min-width: 320px; /* largura mínima da coluna */
-  max-width: 320px;
+ 
+  width: 100vh;
   height: 100%; /* para coluna ter altura total */
   margin-right: 1rem; /* espaçamento entre colunas */
   box-sizing: border-box;
@@ -40,7 +40,7 @@
   background: rgb(255, 255, 255);
   border-radius: 4px;
   box-shadow: 0 0 5px rgb(0 0 0 / 0.1);
-  padding: 0.5rem;
+
 }
 
 .coluna-wrapper:last-child {
