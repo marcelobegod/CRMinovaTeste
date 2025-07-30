@@ -14,13 +14,12 @@
 
 <!-- Área que rola -->
 <div class="conteudo-scroll">
-  <div class="row gx-3 flex-nowrap">
-    <div
-      class="col-12 col-md"
-      *ngFor="let coluna of colunas; let i = index"
-      [class.d-none]="isMobile && i !== colunaVisivel"
-    >
-      <app-column [title]="coluna.titulo" [cards]="coluna.cards"></app-column>
-    </div>
+  <div
+    *ngFor="let coluna of colunas; let i = index"
+    class="coluna-wrapper"
+    [class.d-none]="isMobile && i !== colunaVisivel"
+  >
+    <app-column [title]="coluna.titulo" [cards]="coluna.cards"></app-column>
   </div>
 </div>
+

@@ -1,3 +1,10 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0; /* importante para flexbox não extrapolar */
+}
+
 .linha-sticky {
   height: 56px;
   width: 100%;
@@ -12,28 +19,31 @@
   padding: 0 1rem;
 }
 
-/* Rola somente dentro da área de colunas */
-.colunas-scrollable {
-  height: calc(100vh - 112px); /* 56px navbar + 56px linha-sticky */
-  overflow-x: auto;
-  overflow-y: hidden;
-  margin: 0;
-  padding: 0 1rem;
+.conteudo-scroll {
+  flex: 1; /* ocupa o restante da altura */
+  min-height: 0; /* permite scroll funcionar direito */
+  overflow-x: auto; /* scroll horizontal */
+  overflow-y: hidden; /* evita scroll vertical aqui */
+  padding: 1rem;
   display: flex;
-  flex-wrap: nowrap;
-  box-sizing: border-box;
 }
 
-/* Cada coluna responsiva */
-.col-12 {
-  min-width: 320px;
-  max-width: 100%;
-  flex: 1 0 320px;
+.coluna-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-width: 320px; /* largura mínima da coluna */
+  max-width: 320px;
+  height: 100%; /* para coluna ter altura total */
+  margin-right: 1rem; /* espaçamento entre colunas */
   box-sizing: border-box;
+  overflow-y: auto; /* scroll vertical dentro da coluna */
+  background: rgb(255, 255, 255);
+  border-radius: 4px;
+  box-shadow: 0 0 5px rgb(0 0 0 / 0.1);
+  padding: 0.5rem;
 }
 
-@media (min-width: 768px) {
-  .col-md {
-    min-width: 240px;
-  }
+.coluna-wrapper:last-child {
+  margin-right: 0;
 }
+
