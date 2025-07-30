@@ -1,60 +1,34 @@
-import { ColumnComponent } from './../../components/column/column';
-import { Component, ViewChild, HostListener } from '@angular/core';
+import { Component, HostListener, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Card } from '../../shared/models/card.model'; // Modelo de Card
 import { FormCadModalComponent } from '../../components/form-cad-modal/form-cad-modal';
-
-
-// Interface para colunas
-interface Coluna {
-  titulo: string;
-  cards: Card[];
-}
+import { BoardComponent } from '../../components/board/board';
+import { Card } from '../../shared/models/card.model';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [FormCadModalComponent, CommonModule, ColumnComponent],
+  imports: [CommonModule, FormCadModalComponent, BoardComponent],
   templateUrl: './home.html',
   styleUrls: ['./home.css']
 })
 export class HomeComponent {
   @ViewChild('modal') modal!: FormCadModalComponent;
-
-  colunas: Coluna[] = [
-    { titulo: 'Contato Inicial', cards: [] },
-    { titulo: 'Orçamento enviado', cards: [] },
-    { titulo: 'Visita Agendada', cards: [] },
-    { titulo: 'Demonstrou Interesse', cards: [] },
-    { titulo: 'Negociação', cards: [] },
-  ];
-
-  colunaVisivel = 0;
-  isMobile = window.innerWidth < 768;
-
-  @HostListener('window:resize')
-  onResize() {
-    this.isMobile = window.innerWidth < 768;
-  }
+  @ViewChild(BoardComponent) board!: BoardComponent;
 
   abrirModal() {
     this.modal.abrirModal();
   }
 
-  onNovoCard(card: Card) {
-  this.colunas[0].cards.push(card);
-}
-
-
-  avancarColuna() {
-    if (this.colunaVisivel < this.colunas.length - 1) {
-      this.colunaVisivel++;
-    }
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.board.onResize(window.innerWidth);
   }
 
-  voltarColuna() {
-    if (this.colunaVisivel > 0) {
-      this.colunaVisivel--;
-    }
+  onNovoCard(card: Card) {
+    this.board.onNovoCard(card);
+  }
+
+  ngAfterViewInit() {
+    this.board.abrirModalCallback = () => this.abrirModal();
   }
 }

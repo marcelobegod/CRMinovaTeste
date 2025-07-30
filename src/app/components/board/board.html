@@ -1,1 +1,19 @@
-<p>board works!</p>
+<div class="linha-sticky">
+  <div>
+    <button class="btn btn-success" (click)="abrirModalCallback()">Criar Negócio</button>
+  </div>
+  <div class="d-md-none">
+    <button class="btn btn-outline-secondary me-1" (click)="voltarColuna()" [disabled]="colunaVisivel === 0">←</button>
+    <button class="btn btn-outline-secondary" (click)="avancarColuna()" [disabled]="colunaVisivel === colunas.length - 1">→</button>
+  </div>
+</div>
+
+<div class="conteudo-scroll">
+  <div
+    *ngFor="let coluna of colunas; let i = index"
+    class="coluna-wrapper"
+    [class.d-none]="isMobile && i !== colunaVisivel"
+  >
+    <app-column [title]="coluna.titulo" [cards]="coluna.cards"></app-column>
+  </div>
+</div>
