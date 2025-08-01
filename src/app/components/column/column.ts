@@ -15,4 +15,7 @@ import { Card } from '../../shared/models/card.model'; // 👈 novo import
 export class ColumnComponent {
   @Input() title!: string;
   @Input() cards: Card[] = []; // ✅ usa a interface Card corretamente
+colunas: any;
+isMobile: any;
+colunaVisivel: any;
 }

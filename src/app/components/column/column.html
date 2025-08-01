@@ -1,6 +1,14 @@
-<div
-  class="rounded p-3 d-flex flex-column" style="overflow-y: auto;"
->
-  <h5 class="mb-3 text-center">{{ title }}</h5>
+<div class="p-2">
+  <h5 class="text-center">{{ title }}</h5>
   <app-card *ngFor="let card of cards" [card]="card"></app-card>
+</div>
+
+<div class="conteudo-scroll">
+  <div
+    *ngFor="let coluna of colunas; let i = index"
+    class="coluna-wrapper"
+    [class.d-none]="isMobile && i !== colunaVisivel"
+  >
+    <app-column [title]="coluna.titulo" [cards]="coluna.cards"></app-column>
+  </div>
 </div>
