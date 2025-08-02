@@ -1,13 +1,12 @@
-<div class="linha-sticky">
-  <div>
-    <button class="btn btn-success" (click)="abrirModalCallback()">Criar Negócio</button>
-  </div>
-  <div class="d-md-none">
-    <button class="btn btn-outline-secondary me-1" (click)="voltarColuna()" [disabled]="colunaVisivel === 0">←</button>
-    <button class="btn btn-outline-secondary" (click)="avancarColuna()" [disabled]="colunaVisivel === colunas.length - 1">→</button>
-  </div>
+<app-linha-sticky [abrirModalCallback]="abrirModalCallback"></app-linha-sticky>
+
+<!-- Navegação Mobile -->
+<div class="d-flex justify-content-between px-3 pb-2" *ngIf="isMobile">
+  <button class="btn btn-outline-secondary" (click)="voltarColuna()" [disabled]="colunaVisivel === 0">&larr;</button>
+  <button class="btn btn-outline-secondary" (click)="avancarColuna()" [disabled]="colunaVisivel === colunas.length - 1">&rarr;</button>
 </div>
 
+<!-- Colunas -->
 <div class="conteudo-scroll">
   <div
     *ngFor="let coluna of colunas; let i = index"

@@ -1,3 +1,16 @@
+.linha-sticky {
+  height: 56px;
+  width: 100%;
+  position: sticky;
+  top: 56px;
+  z-index: 1020;
+  background-color: #abaeb1;
+  border-bottom: 1px solid #dee2e6;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
+}
 
 .conteudo-scroll {
   flex: 1;
@@ -20,5 +33,3 @@
   box-shadow: 0 0 5px rgb(0 0 0 / 0.1);
   height: 100vh;
 }
-
-

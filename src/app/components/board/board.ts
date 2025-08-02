@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ColumnComponent } from '../column/column';
 import { Card } from '../../shared/models/card.model';
+import { LinhaStickyComponent } from '../../shared/linha-sticky/linha-sticky';
 
 interface Coluna {
   titulo: string;
@@ -11,7 +12,7 @@ interface Coluna {
 @Component({
   selector: 'app-board',
   standalone: true,
-  imports: [CommonModule, ColumnComponent],
+  imports: [CommonModule, ColumnComponent, LinhaStickyComponent],
   templateUrl: './board.html',
   styleUrls: ['./board.css']
 })
