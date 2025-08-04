@@ -1,14 +1,18 @@
-<div class="p-2">
-  <h5 class="text-center">{{ title }}</h5>
-  <app-card *ngFor="let card of cards" [card]="card"></app-card>
-</div>
+<div class="p-2 d-flex flex-column" style="height: 100%;">
+  <h5 class="text-center mb-3">{{ title }}</h5>
 
-<div class="conteudo-scroll">
   <div
-    *ngFor="let coluna of colunas; let i = index"
-    class="coluna-wrapper"
-    [class.d-none]="isMobile && i !== colunaVisivel"
+  cdkDropList
+  [cdkDropListData]="cards"
+  [id]="index.toString()"
+  [cdkDropListConnectedTo]="getConnectedIds()"
+  class="d-flex flex-column gap-2"
+  style="flex-grow: 1; overflow-y: auto;"
+  (cdkDropListDropped)="drop($event)"
   >
-    <app-column [title]="coluna.titulo" [cards]="coluna.cards"></app-column>
+
+    <div *ngFor="let card of cards" cdkDrag>
+      <app-card [card]="card"></app-card>
+    </div>
   </div>
 </div>

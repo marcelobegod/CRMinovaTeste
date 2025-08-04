@@ -21,7 +21,7 @@ export class HomeComponent {
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
-    this.board.onResize(window.innerWidth);
+    this.board.onResize();
   }
 
   onNovoCard(card: Card) {

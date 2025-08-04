@@ -2,17 +2,39 @@
 
 <!-- Navegação Mobile -->
 <div class="d-flex justify-content-between px-3 pb-2" *ngIf="isMobile">
-  <button class="btn btn-outline-secondary" (click)="voltarColuna()" [disabled]="colunaVisivel === 0">&larr;</button>
-  <button class="btn btn-outline-secondary" (click)="avancarColuna()" [disabled]="colunaVisivel === colunas.length - 1">&rarr;</button>
+  <button
+    class="btn btn-outline-secondary"
+    (click)="voltarColuna()"
+    [disabled]="colunaVisivel === 0"
+  >
+    &larr;
+  </button>
+  <button
+    class="btn btn-outline-secondary"
+    (click)="avancarColuna()"
+    [disabled]="colunaVisivel === colunas.length - 1"
+  >
+    &rarr;
+  </button>
 </div>
 
 <!-- Colunas -->
-<div class="conteudo-scroll">
+<!-- Colunas -->
+<div class="conteudo-scroll" cdkDropListGroup>
   <div
     *ngFor="let coluna of colunas; let i = index"
     class="coluna-wrapper"
     [class.d-none]="isMobile && i !== colunaVisivel"
+    [style.flex]="!isMobile ? '1 1 0' : 'none'"
+    [style.width]="!isMobile ? 'auto' : '100vw'"
   >
-    <app-column [title]="coluna.titulo" [cards]="coluna.cards"></app-column>
+    <app-column
+      [title]="coluna.titulo"
+      [cards]="coluna.cards"
+      [index]="i"
+      [connectedTo]="colunas.length"
+      (cardMoved)="onCardMovido($event)"
+    ></app-column>
   </div>
 </div>
+
