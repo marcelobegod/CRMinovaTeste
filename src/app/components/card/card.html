@@ -1,4 +1,8 @@
-<div class="card mb-2 shadow-sm p-3 bg-light w-100" style="box-sizing: border-box; cursor: grab;">
+<div
+  class="card mb-2 shadow-sm p-3 bg-light w-100"
+  style="box-sizing: border-box; cursor: pointer;"
+  (click)="onClick()"
+>
   <strong>{{ card.negocio }}</strong>
   <div>{{ card.nome }}</div>
   <div>{{ card.servicoDesejado }}</div>

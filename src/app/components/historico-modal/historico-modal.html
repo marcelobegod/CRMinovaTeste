@@ -1,0 +1,33 @@
+<div *ngIf="visible" class="modal-backdrop">
+  <div class="modal-content p-4 bg-white rounded position-relative">
+    <h4>Histórico do Cliente</h4>
+    <button type="button" class="btn-close position-absolute" aria-label="Close" (click)="fecharModal()" style="top: 1rem; right: 1rem;"></button>
+
+    <div *ngIf="card && card.historico && card.historico.length > 0" style="margin-bottom: 1rem;">
+  <h5>Registros:</h5>
+  <ul class="list-group mb-3" style="max-height: 200px; overflow-y: auto;">
+    <li *ngFor="let registro of card.historico" class="list-group-item d-flex justify-content-between align-items-center">
+      <div>
+        <strong>{{ registro.atividade }}</strong> — {{ registro.descricao }}<br />
+        <small>{{ registro.data | date:'short' }}</small>
+      </div>
+      <button class="btn btn-sm btn-outline-primary" (click)="editarRegistro(registro)">Editar</button>
+    </li>
+  </ul>
+</div>
+
+    <div>
+      <label for="atividadeInput">Atividade:</label>
+      <input id="atividadeInput" type="text" class="form-control" [(ngModel)]="novaAtividade" placeholder="Digite a atividade" />
+    </div>
+    <div class="mt-2">
+      <label for="descricaoInput">Descrição:</label>
+      <textarea id="descricaoInput" class="form-control" [(ngModel)]="novaDescricao" placeholder="Descrição da atividade"></textarea>
+    </div>
+
+    <div class="mt-3 d-flex justify-content-end gap-2">
+      <button class="btn btn-secondary" (click)="fecharModal()">Cancelar</button>
+      <button class="btn btn-primary" (click)="salvarRegistro()">Salvar</button>
+    </div>
+  </div>
+</div>

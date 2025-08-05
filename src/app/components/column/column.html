@@ -4,15 +4,17 @@
   <div
   cdkDropList
   [cdkDropListData]="cards"
+  [cdkDropListConnectedTo]="connectedTo"
   [id]="index.toString()"
-  [cdkDropListConnectedTo]="getConnectedIds()"
   class="d-flex flex-column gap-2"
   style="flex-grow: 1; overflow-y: auto;"
   (cdkDropListDropped)="drop($event)"
-  >
+>
 
     <div *ngFor="let card of cards" cdkDrag>
-      <app-card [card]="card"></app-card>
+      <div (click)="onCardClick(card)">
+        <app-card [card]="card"></app-card>
+      </div>
     </div>
   </div>
 </div>

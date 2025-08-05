@@ -4,6 +4,9 @@ import { CommonModule } from '@angular/common';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 import { Card } from '../../shared/models/card.model';
 
+// Import UUID
+import { v4 as uuidv4 } from 'uuid';
+
 @Component({
   selector: 'form-cad-modal',
   standalone: true,
@@ -34,7 +37,6 @@ export class FormCadModalComponent {
       valorNegocio: [''],
       contatoInicial: ['']
     });
-
   }
 
   abrirModal() {
@@ -48,17 +50,18 @@ export class FormCadModalComponent {
   }
 
   onSubmit() {
-  if (this.cadastroForm.valid) {
-    const novoCard: Card = {
-      negocio: this.cadastroForm.value.negocio,
-      nome: this.cadastroForm.value.nome,
-      servicoDesejado: this.cadastroForm.value.servicoDesejado,
-      valorNegocio: this.cadastroForm.value.valorNegocio || 'R$ 0,00',
-      criadoPor: 'Usuário Logado'
-    };
+    if (this.cadastroForm.valid) {
+      const novoCard: Card = {
+        id: uuidv4(), // **gera o id aqui**
+        negocio: this.cadastroForm.value.negocio,
+        nome: this.cadastroForm.value.nome,
+        servicoDesejado: this.cadastroForm.value.servicoDesejado,
+        valorNegocio: this.cadastroForm.value.valorNegocio || 'R$ 0,00',
+        criadoPor: 'Usuário Logado'
+      };
 
-    this.criarCard.emit(novoCard);
-    this.fecharModal();
-  }
+      this.criarCard.emit(novoCard);
+      this.fecharModal();
+    }
   }
 }

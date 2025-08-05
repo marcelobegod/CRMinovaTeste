@@ -1,10 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {
-  DragDropModule,
-  CdkDragDrop,
-  moveItemInArray,
-} from '@angular/cdk/drag-drop';
+import { DragDropModule, CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Card } from '../../shared/models/card.model';
 import { CardComponent } from '../card/card';
 
@@ -19,18 +15,17 @@ export class ColumnComponent {
   @Input() title!: string;
   @Input() cards: Card[] = [];
   @Input() index!: number;
-  @Input() connectedTo: number = 0; // total de colunas
+  @Input() connectedTo: string[] = [];
+
+
   @Output() cardMoved = new EventEmitter<{
     previousIndex: number;
     currentIndex: number;
     previousContainer: number;
     currentContainer: number;
   }>();
-  
-  getConnectedIds(): string[] {
-  return Array.from({ length: this.connectedTo }, (_, i) => i.toString()).filter(id => id !== this.index.toString());
-}
 
+  @Output() cardClicked = new EventEmitter<Card>();  // <-- Evento para clique
 
   drop(event: CdkDragDrop<Card[]>) {
     if (event.previousContainer === event.container) {
@@ -43,5 +38,9 @@ export class ColumnComponent {
         currentContainer: +event.container.id,
       });
     }
+  }
+
+  onCardClick(card: Card) {
+    this.cardClicked.emit(card);
   }
 }
