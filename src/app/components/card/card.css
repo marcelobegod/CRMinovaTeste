@@ -1,0 +1,9 @@
+.cards {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  background-color: #f8f9fa;
+  border: 1px solid rgba(0,0,0,.125);
+  border-radius: 0.375rem; /* 6px */
+  box-shadow: 0 .125rem .25rem rgba(0, 0, 0, 0.075); /* sombra pequena e suave */
+}
