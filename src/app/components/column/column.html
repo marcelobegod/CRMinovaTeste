@@ -1,16 +1,13 @@
-<div class="p-2 d-flex flex-column" style="height: 100%;">
-  <h6 class="text-center mb-3">{{ title }}</h6>
+<div class="columns">
+  <h6>{{ title }}</h6>
 
   <div
   cdkDropList
   [cdkDropListData]="cards"
   [cdkDropListConnectedTo]="connectedTo"
   [id]="index.toString()"
-  class="d-flex flex-column gap-2"
-  style="flex-grow: 1; overflow-y: auto;"
   (cdkDropListDropped)="drop($event)"
->
-
+  >
     <div *ngFor="let card of cards" cdkDrag>
       <div (click)="onCardClick(card)">
         <app-card [card]="card"></app-card>
