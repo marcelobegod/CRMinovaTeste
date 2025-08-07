@@ -1,10 +1,44 @@
-.cards {
-  padding: 10px;
+.card-container {
+  padding: 12px 16px;
   display: flex;
   flex-direction: column;
   background-color: #e9ecef;
-  border: 1px solid rgba(0,0,0,.125);
-  box-shadow: 0 .125rem .25rem rgba(0, 0, 0, 0.075); /* sombra pequena e suave */
-  color: black;
+  border: 1px solid rgba(0, 0, 0, 0.125);
   border-radius: 10px;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  color: #343a40;
+  cursor: pointer;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  outline: none;
+}
+
+.card-container:hover {
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+.card-container:focus {
+  box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25); /* foco acessível */
+}
+
+.titulo {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.linha {
+  font-size: 0.95rem;
+  margin-bottom: 2px;
+}
+
+.valor {
+  font-weight: 500;
+  color: #198754; /* verde Bootstrap */
+}
+
+.pequeno {
+  font-size: 0.85rem;
+  color: #6c757d;
+  margin-top: 6px;
 }

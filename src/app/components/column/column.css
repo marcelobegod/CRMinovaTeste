@@ -1,24 +1,33 @@
-[cdkDropList] {
-  min-height: 1000px;
-  background-color:#ffffff;
-  box-shadow: 1;
-  border-radius: 10px;
-}
-
-[cdkDrag] {
-  cursor: grab;
-}
-
 .columns {
   display: flex;
   flex-direction: column;
-  margin-top: 5px;
+  height: 100%;
+  padding: 0.5rem;
 }
 
+/* Título */
 h6 {
-  font-size: 1.10rem;
+  font-size: 1.1rem;
   font-weight: 600;
   text-align: center;
-  align-items: center;
+  margin-bottom: 0.5rem;
+  color: #343a40;
 }
 
+/* Dropzone = área branca da coluna onde os cards vão */
+.dropzone[cdkDropList] {
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 0.5rem;
+  flex-grow: 1; /* ocupa o restante da coluna */
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  overflow-y: auto;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+/* Drag (mãozinha) */
+[cdkDrag] {
+  cursor: grab;
+}

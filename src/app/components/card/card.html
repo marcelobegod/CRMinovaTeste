@@ -1,8 +1,7 @@
-<div
-  class="cards" (click)="onClick()">
-  <strong>{{ card.negocio }}</strong>
-  <div>{{ card.nome }}</div>
-  <div>{{ card.servicoDesejado }}</div>
-  <div>{{ card.valorNegocio }}</div>
-  <div><strong>Criado por:</strong> {{ card.criadoPor }}</div>
+<div class="card-container" (click)="onClick()" tabindex="0">
+  <strong class="titulo">{{ card.negocio }}</strong>
+  <div class="linha">{{ card.nome }}</div>
+  <div class="linha">{{ card.servicoDesejado }}</div>
+  <div class="linha valor">{{ card.valorNegocio }}</div>
+  <div class="linha pequeno"><strong>Criado por:</strong> {{ card.criadoPor }}</div>
 </div>

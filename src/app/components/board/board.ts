@@ -1,4 +1,4 @@
-import { LinhaStickyComponent } from './../../shared/linha-sticky/linha-sticky';
+import { LinhaStickyComponent } from '../linha-sticky/linha-sticky';
 import { HistoricoModalComponent } from './../historico-modal/historico-modal';
 import { Component, HostListener, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -10,11 +10,15 @@ interface Coluna {
   titulo: string;
   cards: Card[];
 }
-
 @Component({
   selector: 'app-board',
   standalone: true,
-  imports: [CommonModule, ColumnComponent, LinhaStickyComponent, HistoricoModalComponent],
+  imports: [
+    CommonModule,
+    ColumnComponent,
+    LinhaStickyComponent,
+    HistoricoModalComponent
+  ],
   templateUrl: './board.html',
   styleUrls: ['./board.css']
 })
@@ -24,15 +28,17 @@ export class BoardComponent implements OnInit {
     { titulo: 'Orçamento enviado', cards: [] },
     { titulo: 'Visita agendada', cards: [] },
     { titulo: 'Demonstrou interesse', cards: [] },
-    { titulo: 'Negociação', cards: [] },
+    { titulo: 'Negociação', cards: [] }
   ];
 
   colunaVisivel = 0;
   isMobile = window.innerWidth < 768;
+
   historicoModalAberto = false;
   cardSelecionado: Card | null = null;
 
   connectedColumnIds: string[] = [];
+  abrirModalCallback!: () => void;
 
   @HostListener('window:resize')
   onResize() {
@@ -42,8 +48,6 @@ export class BoardComponent implements OnInit {
   ngOnInit() {
     this.connectedColumnIds = this.colunas.map((_, idx) => idx.toString());
   }
-
-  abrirModalCallback!: () => void;
 
   onNovoCard(card: Card): void {
     this.colunas[0].cards.push(card);
@@ -71,7 +75,7 @@ export class BoardComponent implements OnInit {
     const currCol = this.colunas[event.currentContainer]?.cards;
 
     if (!prevCol || !currCol) {
-      console.warn('Coluna anterior ou atual inválida:', event);
+      console.warn('Coluna inválida', event);
       return;
     }
 
@@ -101,3 +105,6 @@ export class BoardComponent implements OnInit {
     this.fecharHistorico();
   }
 }
+
+
+

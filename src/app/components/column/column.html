@@ -1,11 +1,13 @@
 <div class="columns">
   <h6>{{ title }}</h6>
+
   <div
-  cdkDropList
-  [cdkDropListData]="cards"
-  [cdkDropListConnectedTo]="connectedTo"
-  [id]="index.toString()"
-  (cdkDropListDropped)="drop($event)"
+    class="dropzone"
+    cdkDropList
+    [cdkDropListData]="cards"
+    [cdkDropListConnectedTo]="connectedTo"
+    [id]="index.toString()"
+    (cdkDropListDropped)="drop($event)"
   >
     <div *ngFor="let card of cards" cdkDrag>
       <div (click)="onCardClick(card)">
