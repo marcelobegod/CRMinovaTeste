@@ -1,7 +1,26 @@
-<app-linha-sticky
-  [abrirModalCallback]="abrirModalCallback"
-></app-linha-sticky>
+<!-- Linha fixa abaixo da navbar -->
+<app-linha-sticky [abrirModalCallback]="abrirModalCallback"></app-linha-sticky>
 
+<!-- Botões flutuantes para mobile -->
+<button
+  *ngIf="isMobile"
+  class="btn btn-light position-fixed top-50 start-0 translate-middle-y z-3 btn-coluna"
+  style="border-radius: 0 50% 50% 0; height: 40px; width: 40px;"
+  (click)="voltarColuna()"
+>
+  &lt;
+</button>
+
+<button
+  *ngIf="isMobile"
+  class="btn btn-light position-fixed top-50 end-0 translate-middle-y z-3 btn-coluna"
+  style="border-radius: 50% 0 0 50%; height: 40px; width: 40px;"
+  (click)="avancarColuna()"
+>
+  &gt;
+</button>
+
+<!-- Conteúdo principal com scroll horizontal se necessário -->
 <div class="conteudo-scroll">
   <div
     *ngFor="let coluna of colunas; let i = index"
@@ -21,6 +40,7 @@
   </div>
 </div>
 
+<!-- Modal para exibir e editar histórico -->
 <app-historico-modal
   [card]="cardSelecionado"
   [visible]="historicoModalAberto"

@@ -10,6 +10,7 @@ interface Coluna {
   titulo: string;
   cards: Card[];
 }
+
 @Component({
   selector: 'app-board',
   standalone: true,
@@ -40,17 +41,39 @@ export class BoardComponent implements OnInit {
   connectedColumnIds: string[] = [];
   abrirModalCallback!: () => void;
 
-  @HostListener('window:resize')
-  onResize() {
-    this.isMobile = window.innerWidth < 768;
-  }
+  touchStartX = 0;
+  touchEndX = 0;
 
   ngOnInit() {
     this.connectedColumnIds = this.colunas.map((_, idx) => idx.toString());
   }
 
-  onNovoCard(card: Card): void {
-    this.colunas[0].cards.push(card);
+  @HostListener('window:resize')
+  onResize() {
+    this.isMobile = window.innerWidth < 768;
+  }
+
+  @HostListener('touchstart', ['$event'])
+  onTouchStart(event: TouchEvent) {
+    this.touchStartX = event.changedTouches[0].screenX;
+  }
+
+  @HostListener('touchend', ['$event'])
+  onTouchEnd(event: TouchEvent) {
+    this.touchEndX = event.changedTouches[0].screenX;
+    this.handleSwipe();
+  }
+
+  handleSwipe() {
+    const delta = this.touchEndX - this.touchStartX;
+
+    if (Math.abs(delta) < 50) return;
+
+    if (delta > 0) {
+      this.voltarColuna();
+    } else {
+      this.avancarColuna();
+    }
   }
 
   avancarColuna(): void {
@@ -63,6 +86,10 @@ export class BoardComponent implements OnInit {
     if (this.colunaVisivel > 0) {
       this.colunaVisivel--;
     }
+  }
+
+  onNovoCard(card: Card): void {
+    this.colunas[0].cards.push(card);
   }
 
   onCardMovido(event: {
@@ -101,10 +128,6 @@ export class BoardComponent implements OnInit {
 
     this.cardSelecionado.historico.push(novoHistorico);
 
-    // localStorage.setItem(`historico_${this.cardSelecionado.id}`, JSON.stringify(this.cardSelecionado.historico));
     this.fecharHistorico();
   }
 }
-
-
-

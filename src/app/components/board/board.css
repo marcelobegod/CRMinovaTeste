@@ -3,15 +3,15 @@
   display: flex;
   width: 100vw;
   overflow-x: auto;
-  height: calc(100vh - 120px); /* exemplo: 100vh - 100px */
+  height: calc(100vh - 120px);
   padding: 1rem;
   gap: 1rem;
-  background-color: #f8f9fa; /* fundo geral suave */
+  background-color: #f8f9fa;
 }
 
 /* Cada coluna dentro do board */
 .coluna-wrapper {
-  background-color: #ffffff; /* branco com contraste */
+  background-color: #ffffff;
   border-radius: 10px;
   padding: 0.5rem;
   min-width: 280px;
@@ -24,7 +24,16 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Oculta colunas em mobile exceto a visível (já controlado via Angular) */
+.btn-coluna:hover {
+  background-color: #0d6efd;
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+.btn-coluna {
+  background-color:#9bc6ff;
+}
+
 .d-none {
   display: none !important;
 }
@@ -34,9 +43,10 @@
     min-width: 100vw;
     max-width: 100vw;
   }
+
   .conteudo-scroll {
-    height: calc(100vh - 180px); /* exemplo: 100vh - 100px */
-    background-color: #ffffff; /* fundo geral suave */
+    height: calc(100vh - 180px);
+    background-color: #ffffff;
     padding: 0px;
     margin: 0px;
   }
