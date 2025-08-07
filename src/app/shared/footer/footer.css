@@ -1,0 +1,25 @@
+.footers {
+  background-color:#343a40 ;
+  color: white;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  text-align: center;
+}
+
+.text-decoration-underline {
+  text-decoration: underline !important;
+}
+
+.container {
+  width: 100%;
+  max-width: 1140px;
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: 15px;
+  padding-left: 15px;
+  box-sizing: border-box;
+}
+
+p {
+  margin-bottom: 0;
+}

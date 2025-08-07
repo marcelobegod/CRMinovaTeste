@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { DragDropModule, CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Card } from '../../shared/models/card.model';
 import { CardComponent } from '../card/card';
-
 @Component({
   selector: 'app-column',
   standalone: true,
@@ -16,8 +15,6 @@ export class ColumnComponent {
   @Input() cards: Card[] = [];
   @Input() index!: number;
   @Input() connectedTo: string[] = [];
-
-
   @Output() cardMoved = new EventEmitter<{
     previousIndex: number;
     currentIndex: number;

@@ -1,81 +1,78 @@
-/* Estiliza o link ativo */
+/* ========================
+   Navegação e Links
+======================== */
+
+.navbar {
+  background-color: #343a40; /* Cor de fundo escura */
+}
+
+.nav-link {
+  color: #969696; /* Cor padrão dos links */
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #ffffff; /* Cor ao passar o mouse */
+}
+
 .nav-link.active {
   font-weight: bold;
+  color: #ffffff; /* Link ativo em branco */
 }
 
-/* Campo de busca centralizado */
+.menu {
+  color: #ffffff;
+}
+
+/* ========================
+   Menu Hamburguer
+======================== */
+
+.navbar-toggler {
+  border-color: rgba(255, 255, 255, 0.5); /* borda do botão */
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba%28255, 255, 255, 1%29' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+
+
+/* ========================
+   Busca (Search container)
+======================== */
+
 .search-container {
   max-width: 500px;
-  margin: 0 auto;
   width: 100%;
+  margin: 0 auto;
 }
 
-/* Esconde o ícone e mostra o texto da logo por padrão */
-.logo-icon {
-  display: none;
-  width: 20px; /* ajuste conforme necessário */
-  height: auto;
-}
+/* Breakpoints para ajuste da largura do campo de busca */
 
-.logo-text {
-  display: inline;
-}
-
-/* Breakpoints modernos */
-
-/* Telas < 1200px */
 @media (max-width: 1199.98px) {
   .search-container {
     max-width: 400px;
   }
 }
 
-/* Telas < 992px */
 @media (max-width: 991.98px) {
   .search-container {
     max-width: 350px;
   }
 }
 
-/* Telas < 768px */
 @media (max-width: 767.98px) {
   .search-container {
     max-width: 300px;
   }
 }
 
-/* Telas < 579px */
-@media (max-width: 579.00px) {
+@media (max-width: 579.98px) {
   .search-container {
     max-width: 240px;
   }
-
-  .logo-text {
-    display: none;
-  }
-
-  .logo-icon {
-    display: inline-block;
-  }
 }
 
-
-/* Telas < 576px (celulares padrão) */
-@media (max-width: 575.98px) {
-  .search-container {
-    max-width: 240px;
-  }
-
-  .logo-text {
-    display: none;
-  }
-
-  .logo-icon {
-    display: inline-block;
-  }
-}
-
-/* Telas bem pequenas */
 @media (max-width: 399.98px) {
   .search-container {
     max-width: 200px;
@@ -83,6 +80,28 @@
 }
 
 
+/* ========================
+   Logo (Texto e Ícone)
+======================== */
 
+.logo-text {
+  display: inline;
+  color: #ffffff;
+}
 
+.logo-icon {
+  display: none;
+  width: 20px;
+  height: auto;
+}
 
+/* Telas pequenas: exibe o ícone e oculta o texto */
+@media (max-width: 579.98px) {
+  .logo-text {
+    display: none;
+  }
+
+  .logo-icon {
+    display: inline-block;
+  }
+}

@@ -20,10 +20,10 @@ interface Coluna {
 })
 export class BoardComponent implements OnInit {
   colunas: Coluna[] = [
-    { titulo: 'Contato Inicial', cards: [] },
+    { titulo: 'Contato inicial', cards: [] },
     { titulo: 'Orçamento enviado', cards: [] },
-    { titulo: 'Visita Agendada', cards: [] },
-    { titulo: 'Demonstrou Interesse', cards: [] },
+    { titulo: 'Visita agendada', cards: [] },
+    { titulo: 'Demonstrou interesse', cards: [] },
     { titulo: 'Negociação', cards: [] },
   ];
 
