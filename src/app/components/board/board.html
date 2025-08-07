@@ -2,42 +2,46 @@
 <app-linha-sticky [abrirModalCallback]="abrirModalCallback"></app-linha-sticky>
 
 <!-- Botões flutuantes para mobile -->
-<button
-  *ngIf="isMobile"
-  class="btn btn-light position-fixed top-50 start-0 translate-middle-y z-3 btn-coluna"
-  style="border-radius: 0 50% 50% 0; height: 40px; width: 40px;"
-  (click)="voltarColuna()"
->
-  &lt;
-</button>
+@if (isMobile) {
+  <button
+    class="btn btn-light position-fixed top-50 start-0 translate-middle-y z-3 btn-coluna"
+    style="border-radius: 0 50% 50% 0; height: 40px; width: 40px;"
+    (click)="voltarColuna()"
+  >
+    &lt;
+  </button>
 
-<button
-  *ngIf="isMobile"
-  class="btn btn-light position-fixed top-50 end-0 translate-middle-y z-3 btn-coluna"
-  style="border-radius: 50% 0 0 50%; height: 40px; width: 40px;"
-  (click)="avancarColuna()"
->
-  &gt;
-</button>
+  <button
+    class="btn btn-light position-fixed top-50 end-0 translate-middle-y z-3 btn-coluna"
+    style="border-radius: 50% 0 0 50%; height: 40px; width: 40px;"
+    (click)="avancarColuna()"
+  >
+    &gt;
+  </button>
+}
 
 <!-- Conteúdo principal com scroll horizontal se necessário -->
 <div class="conteudo-scroll">
-  <div
-    *ngFor="let coluna of colunas; let i = index"
-    class="coluna-wrapper"
-    [class.d-none]="isMobile && i !== colunaVisivel"
-    [style.flex]="!isMobile ? '1 1 0' : 'none'"
-    [style.width]="!isMobile ? 'auto' : '100vw'"
-  >
+    @for (coluna of colunas; track coluna['id']; let i = $index) {
+    <div
+      class="coluna-wrapper"
+      [class.d-none]="isMobile && i !== colunaVisivel"
+      [style.flex]="!isMobile ? '1 1 0' : 'none'"
+      [style.width]="!isMobile ? 'auto' : '100vw'"
+    >
     <app-column
-      [title]="coluna.titulo"
-      [cards]="coluna.cards"
-      [index]="i"
-      [connectedTo]="connectedColumnIds"
-      (cardMoved)="onCardMovido($event)"
-      (cardClicked)="abrirHistorico($event)"
+    [title]="coluna.titulo"
+    [cards]="coluna.cards"
+    [index]="i"
+    [connectedTo]="connectedColumnIds"
+    (cardMoved)="onCardMovido($event)"
+    (cardClicked)="abrirHistorico($event)"
+    (editarCard)="abrirEdicao($event)"
+    (excluirCard)="confirmarExclusao($event)"
     ></app-column>
-  </div>
+
+    </div>
+  }
 </div>
 
 <!-- Modal para exibir e editar histórico -->

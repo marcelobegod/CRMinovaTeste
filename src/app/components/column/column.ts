@@ -40,4 +40,15 @@ export class ColumnComponent {
   onCardClick(card: Card) {
     this.cardClicked.emit(card);
   }
+
+@Output() editarCard = new EventEmitter<Card>();
+@Output() excluirCard = new EventEmitter<Card>();
+
+onEditarCard(card: Card) {
+  this.editarCard.emit(card);
+}
+
+onExcluirCard(card: Card) {
+  this.excluirCard.emit(card);
+}
 }

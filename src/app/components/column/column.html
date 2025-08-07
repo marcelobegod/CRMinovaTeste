@@ -9,10 +9,18 @@
     [id]="index.toString()"
     (cdkDropListDropped)="drop($event)"
   >
-    <div *ngFor="let card of cards" cdkDrag>
-      <div (click)="onCardClick(card)">
-        <app-card [card]="card"></app-card>
+    @for (card of cards; track card.id; let i = $index) {
+      <div cdkDrag>
+        <div (click)="onCardClick(card)">
+          <app-card
+  [card]="card"
+  (cardClicked)="onCardClick(card)"
+  (editarCard)="onEditarCard(card)"
+  (excluirCard)="onExcluirCard(card)"
+></app-card>
+
+        </div>
       </div>
-    </div>
+    }
   </div>
 </div>

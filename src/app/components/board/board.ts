@@ -7,6 +7,7 @@ import { Card } from '../../shared/models/card.model';
 import { transferArrayItem } from '@angular/cdk/drag-drop';
 
 interface Coluna {
+[x: string]: any;
   titulo: string;
   cards: Card[];
 }
@@ -130,4 +131,16 @@ export class BoardComponent implements OnInit {
 
     this.fecharHistorico();
   }
+  abrirEdicao(card: Card) {
+  // Aqui você abre seu modal de edição já com os dados preenchidos
+  console.log('Editar', card);
+}
+
+confirmarExclusao(card: Card) {
+  if (confirm(`Deseja realmente excluir o negócio "${card.negocio}"?`)) {
+    this.colunas.forEach(coluna => {
+      coluna.cards = coluna.cards.filter(c => c.id !== card.id);
+    });
+  }
+}
 }

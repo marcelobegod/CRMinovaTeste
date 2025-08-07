@@ -12,8 +12,21 @@ import { Card } from '../../shared/models/card.model';
 export class CardComponent {
   @Input() card!: Card;
   @Output() cardClicked = new EventEmitter<Card>();
+  @Output() editarCard = new EventEmitter<Card>();
+  @Output() excluirCard = new EventEmitter<Card>();
+
+  onEditar(event: MouseEvent) {
+  event.stopPropagation(); // Impede de abrir modal de atividades
+  this.editarCard.emit(this.card);
+  }
+
+  onExcluir(event: MouseEvent) {
+  event.stopPropagation();
+  this.excluirCard.emit(this.card);
+  }
 
   onClick() {
-    this.cardClicked.emit(this.card);
+  this.cardClicked.emit(this.card);
   }
+
 }
