@@ -39,6 +39,25 @@ export class FormCadModalComponent {
     });
   }
 
+  formatarValor(valor: any): string {
+    if (!valor) return 'R$ 0,00';
+
+    let numero = Number(
+      valor
+        .toString()
+        .replace(/[^\d,]/g, '')  // remove letras, R$, etc
+        .replace(',', '.')
+    );
+
+    if (isNaN(numero)) return 'R$ 0,00';
+
+    return numero.toLocaleString('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+      minimumFractionDigits: 2
+    });
+  }
+
   abrirModal() {
     this.mostrarModal = true;
   }
@@ -50,18 +69,22 @@ export class FormCadModalComponent {
   }
 
   onSubmit() {
-    if (this.cadastroForm.valid) {
-      const novoCard: Card = {
-        id: uuidv4(), // **gera o id aqui**
-        negocio: this.cadastroForm.value.negocio,
-        nome: this.cadastroForm.value.nome,
-        servicoDesejado: this.cadastroForm.value.servicoDesejado,
-        valorNegocio: this.cadastroForm.value.valorNegocio || 'R$ 0,00',
-        criadoPor: 'Usuário Logado'
-      };
-
-      this.criarCard.emit(novoCard);
-      this.fecharModal();
+    if (this.cadastroForm.invalid) {
+      this.cadastroForm.markAllAsTouched();
+      this.cadastroForm.markAsDirty();
+      return;
     }
+
+    const novoCard: Card = {
+      id: uuidv4(),
+      negocio: this.cadastroForm.value.negocio,
+      nome: this.cadastroForm.value.nome,
+      servicoDesejado: this.cadastroForm.value.servicoDesejado,
+      valorNegocio: this.formatarValor(this.cadastroForm.value.valorNegocio),
+      criadoPor: 'Usuário Logado'
+    };
+
+    this.criarCard.emit(novoCard);
+    this.fecharModal();
   }
 }
