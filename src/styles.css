@@ -2,11 +2,7 @@ html, body, .conteudo-scroll, .coluna-wrapper {
   height: 100%;
   margin: 0;
   overflow: hidden; /* 🔒 Impede scroll no body */
-}
-
-body {
-  display: flex;
-  flex-direction: column;
+  overflow-x: visible;
 }
 
 app-root {
