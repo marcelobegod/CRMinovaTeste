@@ -1,9 +1,7 @@
-
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { EventEmitter, Output, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
-// Adicione esta interface se não existir em outro arquivo, ou importe-a se já existir
 interface Registro {
   id: string;
   atividade: string;
@@ -12,23 +10,33 @@ interface Registro {
   concluida?: boolean;
 }
 
-import { Component } from '@angular/core';
+interface Card {
+  id: string;
+  negocio: string;
+  nome: string;
+  servicoDesejado: string;
+  valorNegocio: string;
+  criadoPor: string;
+  historico?: Registro[];
+}
 
 @Component({
   selector: 'app-historico-modal',
-  imports: [FormsModule, CommonModule],
+  standalone: true,
+  imports: [CommonModule, FormsModule],
   templateUrl: './historico-modal.html',
   styleUrls: ['./historico-modal.css']
 })
 export class HistoricoModalComponent {
-  @Input() visible: boolean = false;
-  @Input() card: any;
+  @Input() card: Card | null = null;
+  @Input() visible = false;
+
   @Output() fechar = new EventEmitter<void>();
-  @Output() atualizar = new EventEmitter<any>(); // Adicionado para emitir atualizações
+  @Output() atualizar = new EventEmitter<Card>();
 
   novaAtividade = '';
   novaDescricao = '';
-  dataFormatada = ''; // string dd/mm/aaaa para input data
+  dataInputISO = '';
 
   registroEditando: Registro | null = null;
 
@@ -38,121 +46,110 @@ export class HistoricoModalComponent {
     this.fechar.emit();
   }
 
-  dataInputISO: string = '';
+  editarRegistro(registro: Registro) {
+    if (registro.concluida) return; // bloqueia edição de concluída
 
-editarRegistro(registro: Registro) {
-  if (registro.concluida) return;
-
-  this.registroEditando = registro;
-  this.novaAtividade = registro.atividade;
-  this.novaDescricao = registro.descricao;
-  this.dataInputISO = this.formatarDataISO(registro.data);
-}
-
-salvarRegistro() {
-  if (!this.card) return;
-
-  if (!this.novaAtividade.trim()) {
-    alert('Atividade é obrigatória');
-    return;
+    this.registroEditando = registro;
+    this.novaAtividade = registro.atividade;
+    this.novaDescricao = registro.descricao;
+    this.dataInputISO = this.formatarDataISO(registro.data);
   }
 
-  if (!this.dataInputISO) {
-    alert('Data é obrigatória');
-    return;
+  salvarRegistro() {
+    if (!this.card) return;
+
+    if (!this.novaAtividade.trim()) {
+      alert('Atividade é obrigatória');
+      return;
+    }
+
+    if (!this.dataInputISO) {
+      alert('Data é obrigatória');
+      return;
+    }
+
+    const dataConvertida = new Date(this.dataInputISO);
+    if (isNaN(dataConvertida.getTime())) {
+      alert('Data inválida');
+      return;
+    }
+
+    if (!this.card.historico) {
+      this.card.historico = [];
+    }
+
+    if (this.registroEditando) {
+      // Atualiza registro existente só se não concluído
+      if (!this.registroEditando.concluida) {
+        this.registroEditando.atividade = this.novaAtividade;
+        this.registroEditando.descricao = this.novaDescricao;
+        this.registroEditando.data = dataConvertida;
+      }
+      this.registroEditando = null;
+    } else {
+      // Novo registro
+      const novoRegistro: Registro = {
+        id: this.gerarId(),
+        atividade: this.novaAtividade,
+        descricao: this.novaDescricao,
+        data: dataConvertida,
+        concluida: false
+      };
+      this.card.historico.push(novoRegistro);
+    }
+
+    this.atualizar.emit(this.card);
+    this.limparCampos();
   }
 
-  const dataConvertida = new Date(this.dataInputISO);
-  if (isNaN(dataConvertida.getTime())) {
-    alert('Data inválida');
-    return;
+  concluirAtividade() {
+    if (!this.registroEditando) return;
+    if (this.registroEditando.concluida) return;
+
+    const hoje = new Date();
+    let dataAtividade = new Date(this.dataInputISO);
+
+    // Se a data da atividade for futura, usa a data atual
+    if (dataAtividade > hoje) {
+      dataAtividade = hoje;
+    }
+
+    this.registroEditando.data = dataAtividade;
+    this.registroEditando.concluida = true;
+
+    this.dataInputISO = this.formatarDataISO(dataAtividade);
+
+    if (this.card) {
+      this.atualizar.emit(this.card);
+    }
   }
 
-  if (!this.card.historico) {
-    this.card.historico = [];
-  }
-
-  if (this.registroEditando) {
-    this.registroEditando.atividade = this.novaAtividade;
-    this.registroEditando.descricao = this.novaDescricao;
-    this.registroEditando.data = dataConvertida;
+  limparCampos() {
+    this.novaAtividade = '';
+    this.novaDescricao = '';
+    this.dataInputISO = '';
     this.registroEditando = null;
-  } else {
-    const novoRegistro: Registro = {
-      id: this.gerarId(),
-      atividade: this.novaAtividade,
-      descricao: this.novaDescricao,
-      data: dataConvertida,
-    };
-    this.card.historico.push(novoRegistro);
   }
 
-  // Atualizar localStorage e emitir evento atualizado aqui...
-
-  this.atualizar.emit(this.card);
-  this.limparCampos();
-}
-
-limparCampos() {
-  this.novaAtividade = '';
-  this.novaDescricao = '';
-  this.dataInputISO = '';
-  this.registroEditando = null;
-}
-
-formatarDataISO(data: Date): string {
-  if (!data) return '';
-  const d = new Date(data);
-  const ano = d.getFullYear();
-  const mes = ('0' + (d.getMonth() + 1)).slice(-2);
-  const dia = ('0' + d.getDate()).slice(-2);
-  return `${ano}-${mes}-${dia}`;  // formato yyyy-MM-dd
-}
-
-formatarData(data: Date): string {
-  if (!data) return '';
-  const d = new Date(data);
-  const dia = ('0' + d.getDate()).slice(-2);
-  const mes = ('0' + (d.getMonth() + 1)).slice(-2);
-  const ano = d.getFullYear();
-  return `${dia}/${mes}/${ano}`;  // formato dd/mm/aaaa para exibição
-}
-
-
-  converterDataParaDate(dataStr: string): Date | null {
-    if (!dataStr) return null;
-    const partes = dataStr.split('/');
-    if (partes.length !== 3) return null;
-    const dia = parseInt(partes[0], 10);
-    const mes = parseInt(partes[1], 10) - 1; // zero-based month
-    const ano = parseInt(partes[2], 10);
-    const dateObj = new Date(ano, mes, dia);
-    // Validar data
-    if (
-      dateObj.getFullYear() === ano &&
-      dateObj.getMonth() === mes &&
-      dateObj.getDate() === dia
-    ) {
-      return dateObj;
-    }
-    return null;
+  gerarId() {
+    return Math.random().toString(36).substring(2, 9);
   }
 
-  validarData() {
-    // Se data inválida, limpa campo
-    if (!this.converterDataParaDate(this.dataFormatada)) {
-      this.dataFormatada = '';
-      alert('Data inválida. Use dd/mm/aaaa');
-    }
+  formatarDataISO(data: Date): string {
+    if (!data) return '';
+    const d = new Date(data);
+    const ano = d.getFullYear();
+    const mes = ('0' + (d.getMonth() + 1)).slice(-2);
+    const dia = ('0' + d.getDate()).slice(-2);
+    return `${ano}-${mes}-${dia}`;
   }
 
-  gerarId(): string {
-    // Gera um ID simples baseado em timestamp e um número aleatório
-    return Date.now().toString(36) + Math.random().toString(36).substr(2, 9);
+  formatarData(data: Date): string {
+    if (!data) return '';
+    const d = new Date(data);
+    const dia = ('0' + d.getDate()).slice(-2);
+    const mes = ('0' + (d.getMonth() + 1)).slice(-2);
+    const ano = d.getFullYear();
+    return `${dia}/${mes}/${ano}`;
   }
-
-  concluirAtividade(registro: any): void {
-  // Implement your logic here, for example:
-  registro.concluida = true;
-}
 }

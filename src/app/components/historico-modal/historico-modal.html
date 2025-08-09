@@ -21,21 +21,31 @@
             <small>{{ formatarData(registro.data) }}</small>
           </div>
           <div>
-            <button
-              class="btn btn-sm btn-outline-primary me-2"
-              (click)="registro.concluida ? null : editarRegistro(registro)"
-              [disabled]="registro.concluida"
-            >
-              Editar
-            </button>
-            <button
-              class="btn btn-sm btn-outline-success"
-              (click)="concluirAtividade(registro)"
-              [disabled]="registro.concluida"
-              title="Concluir atividade"
-            >
-              ✔
-            </button>
+            <ng-container *ngIf="!registro.concluida; else concluidoTemplate">
+              <button
+                class="btn btn-sm btn-outline-primary me-2"
+                (click)="editarRegistro(registro)"
+              >
+                Editar
+              </button>
+            </ng-container>
+            <ng-template #concluidoTemplate>
+              <span class="text-success fw-semibold d-flex align-items-center gap-1">
+                Atividade concluída
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="bi bi-check-lg"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="M13.485 1.758a.75.75 0 0 1 1.06 1.06l-7.75 7.75a.75.75 0 0 1-1.06 0L1.47 7.47a.75.75 0 0 1 1.06-1.06L6 9.88l7.485-7.485z"
+                  />
+                </svg>
+              </span>
+            </ng-template>
           </div>
         </li>
       </ul>
@@ -72,7 +82,6 @@
             required
           />
         </div>
-
       </div>
 
       <div class="mb-3 mt-3">
@@ -97,6 +106,15 @@
           [disabled]="registroEditando?.concluida && !registroEditando"
         >
           Salvar
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-success"
+          (click)="concluirAtividade()"
+          [disabled]="!registroEditando || registroEditando.concluida"
+        >
+          Concluir atividade
         </button>
       </div>
     </form>
