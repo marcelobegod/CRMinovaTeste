@@ -1,0 +1,25 @@
+<div class="dados-cliente">
+      <h3>Dados do Cliente</h3>
+      <form (ngSubmit)="emitirAtualizacao()">
+        <div class="mb-2">
+          <label for="nomeInput" class="form-label">Nome:</label>
+          <input id="nomeInput" type="text" class="form-control" [(ngModel)]="card.nome" name="nome" />
+        </div>
+        <div class="mb-2">
+          <label for="negocioInput" class="form-label">Negócio:</label>
+          <input id="negocioInput" type="text" class="form-control" [(ngModel)]="card.negocio" name="negocio" />
+        </div>
+        <div class="mb-2">
+          <label for="servicoInput" class="form-label">Serviço Desejado:</label>
+          <input id="servicoInput" type="text" class="form-control" [(ngModel)]="card.servicoDesejado" name="servicoDesejado" />
+        </div>
+        <div class="mb-2">
+          <label for="valorInput" class="form-label">Valor do Negócio:</label>
+          <input id="valorInput" type="text" class="form-control" [(ngModel)]="card.valorNegocio" name="valorNegocio" />
+        </div>
+        <div class="mb-2">
+          <label for="criadoPorInput" class="form-label">Criado Por:</label>
+          <input id="criadoPorInput" type="text" class="form-control" [(ngModel)]="card.criadoPor" name="criadoPor" />
+        </div>
+      </form>
+    </div>

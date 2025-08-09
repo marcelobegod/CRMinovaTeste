@@ -1,0 +1,9 @@
+<ul>
+      <li *ngFor="let item of historicoOrdenado()">
+        <strong>{{ item.atividade }}</strong> - {{ formatarData(item.data) }}
+        <p>{{ item.descricao }}</p>
+        <button (click)="editar.emit(item)" [disabled]="item.concluida">Editar</button>
+        <button (click)="concluir.emit(item)" [disabled]="item.concluida">Concluir</button>
+        <span *ngIf="item.concluida" style="color: green;">✔ Atividade concluída</span>
+      </li>
+    </ul>

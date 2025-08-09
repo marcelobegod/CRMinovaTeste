@@ -1,7 +1,10 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { HistoricoFormComponent } from '../historico-form/historico-form';
+import { DadosClienteComponent } from '../dados-cliente/dados-cliente';
 
+// Interface para registros de atividades do cliente
 interface Registro {
   id: string;
   atividade: string;
@@ -10,6 +13,7 @@ interface Registro {
   concluida?: boolean;
 }
 
+// Interface para o card/cliente
 interface Card {
   id: string;
   negocio: string;
@@ -23,31 +27,41 @@ interface Card {
 @Component({
   selector: 'app-historico-modal',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, HistoricoFormComponent, DadosClienteComponent],
   templateUrl: './historico-modal.html',
   styleUrls: ['./historico-modal.css']
 })
 export class HistoricoModalComponent {
+  // Recebe o card (cliente) a ser editado
   @Input() card: Card | null = null;
+
+  // Controle de visibilidade do modal
   @Input() visible = false;
 
+  // Emite evento para fechar o modal
   @Output() fechar = new EventEmitter<void>();
+
+  // Emite evento quando o card é atualizado (dados ou histórico)
   @Output() atualizar = new EventEmitter<Card>();
 
+  // Variáveis para o formulário de nova atividade
   novaAtividade = '';
   novaDescricao = '';
   dataInputISO = '';
 
+  // Registro que está sendo editado (se houver)
   registroEditando: Registro | null = null;
 
+  // Fecha o modal, limpa campos e emite evento para o componente pai
   fecharModal() {
     this.visible = false;
     this.limparCampos();
     this.fechar.emit();
   }
 
+  // Prepara o modal para edição de um registro específico
   editarRegistro(registro: Registro) {
-    if (registro.concluida) return; // bloqueia edição de concluída
+    if (registro.concluida) return; // Não permite editar registros concluídos
 
     this.registroEditando = registro;
     this.novaAtividade = registro.atividade;
@@ -55,56 +69,63 @@ export class HistoricoModalComponent {
     this.dataInputISO = this.formatarDataISO(registro.data);
   }
 
-  salvarRegistro() {
-  if (!this.card) return;
+  // Salva um novo registro ou atualiza o registro editado
+  salvar(event: { atividade: string; descricao: string; data: string }) {
+    if (!this.card) return;
 
-  // validações ...
-
-  if (this.registroEditando) {
-    // atualizar registro
-    if (!this.registroEditando.concluida) {
-      this.registroEditando.atividade = this.novaAtividade;
-      this.registroEditando.descricao = this.novaDescricao;
-      this.registroEditando.data = new Date(this.dataInputISO);
+    if (this.registroEditando) {
+      // Atualiza registro existente, se não concluído
+      if (!this.registroEditando.concluida) {
+        this.registroEditando.atividade = event.atividade;
+        this.registroEditando.descricao = event.descricao;
+        this.registroEditando.data = new Date(event.data);
+      }
+      this.registroEditando = null;
+    } else {
+      // Adiciona novo registro ao histórico do card
+      this.card.historico = this.card.historico || [];
+      this.card.historico.push({
+        id: this.gerarId(),
+        atividade: event.atividade,
+        descricao: event.descricao,
+        data: new Date(event.data),
+        concluida: false
+      });
     }
-    this.registroEditando = null;
-  } else {
-    // criar novo registro
-    this.card.historico = this.card.historico || [];
-    this.card.historico.push({
-      id: this.gerarId(),
-      atividade: this.novaAtividade,
-      descricao: this.novaDescricao,
-      data: new Date(this.dataInputISO),
-      concluida: false
-    });
+
+    // Emite evento para informar que o card foi atualizado
+    this.atualizar.emit(this.card);
+
+    // Limpa campos para nova entrada
+    this.limparCampos();
   }
 
-  this.atualizar.emit(this.card);
-
-  // NÃO fechar o modal aqui
-  this.limparCampos();
-}
-
-  concluirAtividade() {
-  if (!this.registroEditando || this.registroEditando.concluida) return;
+  // Marca a atividade atual como concluída e ajusta a data se necessário
+  concluirAtividadeRegistro(registro: Registro) {
+  if (registro.concluida) return;
 
   const hoje = new Date();
-  let dataAtividade = new Date(this.dataInputISO);
+  let dataAtividade = new Date();
 
+  // Ajusta a data para hoje se for futura
   if (dataAtividade > hoje) dataAtividade = hoje;
 
-  this.registroEditando.data = dataAtividade;
-  this.registroEditando.concluida = true;
-  this.dataInputISO = this.formatarDataISO(dataAtividade);
+  registro.data = dataAtividade;
+  registro.concluida = true;
+
+  // Se estiver editando este registro, limpa o estado de edição
+  if (this.registroEditando && this.registroEditando.id === registro.id) {
+    this.registroEditando = null;
+    this.limparCampos();
+  }
 
   if (this.card) {
     this.atualizar.emit(this.card);
   }
-
-  // NÃO fechar o modal aqui
 }
 
+
+  // Limpa os campos do formulário e reseta o registro em edição
   limparCampos() {
     this.novaAtividade = '';
     this.novaDescricao = '';
@@ -112,10 +133,12 @@ export class HistoricoModalComponent {
     this.registroEditando = null;
   }
 
-  gerarId() {
+  // Gera um ID simples para novos registros (não recomendado para produção)
+  gerarId(): string {
     return Math.random().toString(36).substring(2, 9);
   }
 
+  // Formata uma data para o padrão ISO yyyy-MM-dd para input type="date"
   formatarDataISO(data: Date): string {
     if (!data) return '';
     const d = new Date(data);
@@ -125,6 +148,7 @@ export class HistoricoModalComponent {
     return `${ano}-${mes}-${dia}`;
   }
 
+  // Formata data para exibição dd/MM/yyyy
   formatarData(data: Date): string {
     if (!data) return '';
     const d = new Date(data);
@@ -134,7 +158,8 @@ export class HistoricoModalComponent {
     return `${dia}/${mes}/${ano}`;
   }
 
-  historicoOrdenado() {
+  // Ordena o histórico: não concluídas primeiro, depois concluídas por data decrescente
+  historicoOrdenado(): Registro[] {
     if (!this.card?.historico) return [];
 
     const naoConcluidas = this.card.historico.filter(r => !r.concluida);

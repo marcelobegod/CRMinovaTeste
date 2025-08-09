@@ -111,7 +111,7 @@ export class BoardComponent implements OnInit {
     transferArrayItem(prevCol, currCol, event.previousIndex, event.currentIndex);
   }
 
- abrirHistorico(card: Card): void {
+abrirHistorico(card: Card) {
   this.cardSelecionado = card;
   this.historicoModalAberto = true;
 }

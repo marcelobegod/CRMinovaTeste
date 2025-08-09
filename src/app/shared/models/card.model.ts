@@ -1,10 +1,3 @@
-export interface HistoricoItem {
-  id: string;
-  atividade: string;
-  descricao: string;
-  data: Date;
-}
-
 export interface Card {
   id: string;
   negocio: string;
@@ -12,5 +5,14 @@ export interface Card {
   servicoDesejado: string;
   valorNegocio: string;
   criadoPor: string;
-  historico?: HistoricoItem[];
+  historico?: any[];
 }
+
+export interface HistoricoItem {
+  id: string;
+  atividade: string;
+  descricao: string;
+  data: Date;
+}
+
+
