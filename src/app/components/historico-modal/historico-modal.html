@@ -1,33 +1,104 @@
-<div *ngIf="visible" class="modal-backdrop">
-  <div class="modal-content p-4 bg-white rounded position-relative">
+<div *ngIf="visible" class="modal-backdrop" role="dialog" aria-modal="true" tabindex="-1">
+  <div class="modal-content custom-modal-content">
     <h4>Histórico do Cliente</h4>
-    <button type="button" class="btn-close position-absolute" aria-label="Close" (click)="fecharModal()" style="top: 1rem; right: 1rem;"></button>
+    <button
+      type="button"
+      class="btn-close position-absolute"
+      aria-label="Fechar"
+      (click)="fecharModal()"
+      style="top: 1rem; right: 1rem;"
+    ></button>
 
-    <div *ngIf="card && card.historico && card.historico.length > 0" style="margin-bottom: 1rem;">
-  <h5>Registros:</h5>
-  <ul class="list-group mb-3" style="max-height: 200px; overflow-y: auto;">
-    <li *ngFor="let registro of card.historico" class="list-group-item d-flex justify-content-between align-items-center">
-      <div>
-        <strong>{{ registro.atividade }}</strong> — {{ registro.descricao }}<br />
-        <small>{{ registro.data | date:'short' }}</small>
+    <div *ngIf="card && card.historico && card.historico.length > 0" class="mb-3">
+      <h5>Registros:</h5>
+      <ul class="list-group" style="max-height: 200px; overflow-y: auto;">
+        <li
+          *ngFor="let registro of card.historico"
+          class="list-group-item d-flex justify-content-between align-items-center"
+        >
+          <div>
+            <strong>{{ registro.atividade }}</strong> — {{ registro.descricao }}<br />
+            <small>{{ formatarData(registro.data) }}</small>
+          </div>
+          <div>
+            <button
+              class="btn btn-sm btn-outline-primary me-2"
+              (click)="registro.concluida ? null : editarRegistro(registro)"
+              [disabled]="registro.concluida"
+            >
+              Editar
+            </button>
+            <button
+              class="btn btn-sm btn-outline-success"
+              (click)="concluirAtividade(registro)"
+              [disabled]="registro.concluida"
+              title="Concluir atividade"
+            >
+              ✔
+            </button>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <form>
+      <div class="row g-3 align-items-center">
+        <div class="col-6 col-md-4">
+          <label for="atividadeSelect" class="form-label">Atividade:</label>
+          <select
+            id="atividadeSelect"
+            class="form-select"
+            [(ngModel)]="novaAtividade"
+            name="atividadeSelect"
+            [disabled]="registroEditando?.concluida ?? false"
+            required
+          >
+            <option value="" disabled>Selecione</option>
+            <option value="ligar">Ligar</option>
+            <option value="email">Email</option>
+            <option value="mensagem">Mensagem</option>
+          </select>
+        </div>
+
+        <div class="col-6 col-md-4">
+          <label for="dataInput" class="form-label">Data:</label>
+          <input
+            id="dataInput"
+            type="date"
+            class="form-control"
+            [(ngModel)]="dataInputISO"
+            name="dataInput"
+            [disabled]="registroEditando?.concluida ?? false"
+            required
+          />
+        </div>
+
       </div>
-      <button class="btn btn-sm btn-outline-primary" (click)="editarRegistro(registro)">Editar</button>
-    </li>
-  </ul>
-</div>
 
-    <div>
-      <label for="atividadeInput">Atividade:</label>
-      <input id="atividadeInput" type="text" class="form-control" [(ngModel)]="novaAtividade" placeholder="Digite a atividade" />
-    </div>
-    <div class="mt-2">
-      <label for="descricaoInput">Descrição:</label>
-      <textarea id="descricaoInput" class="form-control" [(ngModel)]="novaDescricao" placeholder="Descrição da atividade"></textarea>
-    </div>
+      <div class="mb-3 mt-3">
+        <label for="descricaoInput" class="form-label">Descrição:</label>
+        <textarea
+          id="descricaoInput"
+          class="form-control"
+          rows="3"
+          [(ngModel)]="novaDescricao"
+          name="descricaoInput"
+          placeholder="Descrição da atividade"
+          [disabled]="registroEditando?.concluida ?? false"
+        ></textarea>
+      </div>
 
-    <div class="mt-3 d-flex justify-content-end gap-2">
-      <button class="btn btn-secondary" (click)="fecharModal()">Cancelar</button>
-      <button class="btn btn-primary" (click)="salvarRegistro()">Salvar</button>
-    </div>
+      <div class="d-flex justify-content-end gap-2">
+        <button type="button" class="btn btn-secondary" (click)="fecharModal()">Cancelar</button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="salvarRegistro()"
+          [disabled]="registroEditando?.concluida && !registroEditando"
+        >
+          Salvar
+        </button>
+      </div>
+    </form>
   </div>
 </div>
