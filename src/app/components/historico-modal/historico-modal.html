@@ -1,6 +1,5 @@
 <div *ngIf="visible" class="modal-backdrop" role="dialog" aria-modal="true" tabindex="-1">
   <div class="modal-content custom-modal-content">
-    <h4>Histórico do Cliente</h4>
     <button
       type="button"
       class="btn-close position-absolute"
@@ -9,114 +8,178 @@
       style="top: 1rem; right: 1rem;"
     ></button>
 
-    <div *ngIf="card && card.historico && card.historico.length > 0" class="mb-3">
-      <h5>Registros:</h5>
-      <ul class="list-group" style="max-height: 200px; overflow-y: auto;">
-        <li
-          *ngFor="let registro of card.historico"
-          class="list-group-item d-flex justify-content-between align-items-center"
-        >
-          <div>
-            <strong>{{ registro.atividade }}</strong> — {{ registro.descricao }}<br />
-            <small>{{ formatarData(registro.data) }}</small>
-          </div>
-          <div>
-            <ng-container *ngIf="!registro.concluida; else concluidoTemplate">
-              <button
-                class="btn btn-sm btn-outline-primary me-2"
-                (click)="editarRegistro(registro)"
-              >
-                Editar
-              </button>
-            </ng-container>
-            <ng-template #concluidoTemplate>
-              <span class="text-success fw-semibold d-flex align-items-center gap-1">
-                Atividade concluída
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  fill="currentColor"
-                  class="bi bi-check-lg"
-                  viewBox="0 0 16 16"
-                >
-                  <path
-                    d="M13.485 1.758a.75.75 0 0 1 1.06 1.06l-7.75 7.75a.75.75 0 0 1-1.06 0L1.47 7.47a.75.75 0 0 1 1.06-1.06L6 9.88l7.485-7.485z"
-                  />
-                </svg>
-              </span>
-            </ng-template>
-          </div>
-        </li>
-      </ul>
-    </div>
-
-    <form>
-      <div class="row g-3 align-items-center">
-        <div class="col-6 col-md-4">
-          <label for="atividadeSelect" class="form-label">Atividade:</label>
-          <select
-            id="atividadeSelect"
-            class="form-select"
-            [(ngModel)]="novaAtividade"
-            name="atividadeSelect"
-            [disabled]="registroEditando?.concluida ?? false"
-            required
-          >
-            <option value="" disabled>Selecione</option>
-            <option value="ligar">Ligar</option>
-            <option value="email">Email</option>
-            <option value="mensagem">Mensagem</option>
-          </select>
-        </div>
-
-        <div class="col-6 col-md-4">
-          <label for="dataInput" class="form-label">Data:</label>
+    <!-- Lado esquerdo (ou topo no mobile): Dados do Cliente -->
+    <div class="dados-cliente">
+      <h4>Dados do Cliente</h4>
+      <form>
+        <div class="mb-3">
+          <label for="nomeInput" class="form-label">Nome:</label>
           <input
-            id="dataInput"
-            type="date"
+            id="nomeInput"
+            type="text"
             class="form-control"
-            [(ngModel)]="dataInputISO"
-            name="dataInput"
-            [disabled]="registroEditando?.concluida ?? false"
-            required
+            [(ngModel)]="card!.nome"
+            name="nomeInput"
           />
         </div>
+
+        <div class="mb-3">
+          <label for="negocioInput" class="form-label">Negócio:</label>
+          <input
+            id="negocioInput"
+            type="text"
+            class="form-control"
+            [(ngModel)]="card!.negocio"
+            name="negocioInput"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="servicoInput" class="form-label">Serviço Desejado:</label>
+          <input
+            id="servicoInput"
+            type="text"
+            class="form-control"
+            [(ngModel)]="card!.servicoDesejado"
+            name="servicoInput"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="valorInput" class="form-label">Valor do Negócio:</label>
+          <input
+            id="valorInput"
+            type="text"
+            class="form-control"
+            [(ngModel)]="card!.valorNegocio"
+            name="valorInput"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="criadoPorInput" class="form-label">Criado Por:</label>
+          <input
+            id="criadoPorInput"
+            type="text"
+            class="form-control"
+            [(ngModel)]="card!.criadoPor"
+            name="criadoPorInput"
+          />
+        </div>
+      </form>
+    </div>
+
+    <!-- Lado direito (ou abaixo no mobile): Histórico -->
+    <div class="historico">
+      <h4>Histórico do Cliente</h4>
+
+      <div *ngIf="card && card.historico && card.historico.length > 0" class="mb-3">
+        <h5>Registros:</h5>
+        <ul class="list-group registros-lista">
+          <li
+            *ngFor="let registro of historicoOrdenado()"
+            class="list-group-item d-flex justify-content-between align-items-start"
+          >
+            <div class="flex-grow-1 me-3 registro-textos">
+              <div class="fw-bold">
+                {{ registro.atividade }} — {{ formatarData(registro.data) }}
+              </div>
+              <div class="descricao-texto">
+                {{ registro.descricao }}
+              </div>
+            </div>
+            <div class="d-flex align-items-start">
+              <ng-container *ngIf="!registro.concluida; else concluidoTemplate">
+                <button
+                  class="btn btn-sm btn-outline-primary"
+                  (click)="editarRegistro(registro)"
+                  style="white-space: nowrap;"
+                >
+                  Editar
+                </button>
+              </ng-container>
+              <ng-template #concluidoTemplate>
+                <span
+                  class="text-success fw-semibold"
+                  [title]="'Atividade concluída em ' + formatarData(registro.data)"
+                  style="font-size: 1.2rem; cursor: default; user-select: none;"
+                >
+                  ✔
+                </span>
+              </ng-template>
+            </div>
+          </li>
+        </ul>
       </div>
 
-      <div class="mb-3 mt-3">
-        <label for="descricaoInput" class="form-label">Descrição:</label>
-        <textarea
-          id="descricaoInput"
-          class="form-control"
-          rows="3"
-          [(ngModel)]="novaDescricao"
-          name="descricaoInput"
-          placeholder="Descrição da atividade"
-          [disabled]="registroEditando?.concluida ?? false"
-        ></textarea>
-      </div>
+      <!-- Formulário de registro de atividade -->
+      <form>
+        <div class="row g-3 align-items-center">
+          <div class="col-6">
+            <label for="atividadeSelect" class="form-label">Atividade:</label>
+            <select
+              id="atividadeSelect"
+              class="form-select"
+              [(ngModel)]="novaAtividade"
+              name="atividadeSelect"
+              [disabled]="registroEditando?.concluida ?? false"
+              required
+            >
+              <option value="" disabled>Selecione</option>
+              <option value="ligar">Ligar</option>
+              <option value="email">Email</option>
+              <option value="mensagem">Mensagem</option>
+            </select>
+          </div>
 
-      <div class="d-flex justify-content-end gap-2">
-        <button type="button" class="btn btn-secondary" (click)="fecharModal()">Cancelar</button>
-        <button
-          type="button"
-          class="btn btn-primary"
-          (click)="salvarRegistro()"
-          [disabled]="registroEditando?.concluida && !registroEditando"
-        >
-          Salvar
-        </button>
+          <div class="col-6">
+            <label for="dataInput" class="form-label">Data:</label>
+            <input
+              id="dataInput"
+              type="date"
+              class="form-control"
+              [(ngModel)]="dataInputISO"
+              name="dataInput"
+              [disabled]="registroEditando?.concluida ?? false"
+              required
+            />
+          </div>
+        </div>
 
-        <button
-          type="button"
-          class="btn btn-success"
-          (click)="concluirAtividade()"
-          [disabled]="!registroEditando || registroEditando.concluida"
-        >
-          Concluir atividade
-        </button>
-      </div>
-    </form>
+        <div class="mb-3 mt-3">
+          <label for="descricaoInput" class="form-label">Descrição:</label>
+          <textarea
+            id="descricaoInput"
+            class="form-control"
+            rows="3"
+            [(ngModel)]="novaDescricao"
+            name="descricaoInput"
+            placeholder="Descrição da atividade"
+            [disabled]="registroEditando?.concluida ?? false"
+          ></textarea>
+        </div>
+
+        <div class="d-flex justify-content-end gap-2">
+          <button type="button" class="btn btn-secondary" (click)="fecharModal()">Cancelar</button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="salvarRegistro()"
+            [disabled]="registroEditando?.concluida && !registroEditando"
+          >
+            Salvar
+          </button>
+
+          <button
+            type="button"
+            class="btn btn-success"
+            (click)="concluirAtividade()"
+            [disabled]="!registroEditando || registroEditando.concluida"
+          >
+            Concluir atividade
+          </button>
+        </div>
+      </form>
+    </div>
   </div>
 </div>

@@ -46,8 +46,9 @@
 
 <!-- Modal para exibir e editar histórico -->
 <app-historico-modal
-  [card]="cardSelecionado"
   [visible]="historicoModalAberto"
+  [card]="cardSelecionado"
   (fechar)="fecharHistorico()"
-  (salvar)="salvarHistorico($event)"
-></app-historico-modal>
+  (atualizar)="salvarHistorico($event)">
+</app-historico-modal>
+

@@ -6,6 +6,7 @@ import { ColumnComponent } from '../column/column';
 import { Card } from '../../shared/models/card.model';
 import { transferArrayItem } from '@angular/cdk/drag-drop';
 
+
 interface Coluna {
 [x: string]: any;
   titulo: string;
@@ -110,27 +111,31 @@ export class BoardComponent implements OnInit {
     transferArrayItem(prevCol, currCol, event.previousIndex, event.currentIndex);
   }
 
-  abrirHistorico(card: Card): void {
-    this.cardSelecionado = card;
-    this.historicoModalAberto = true;
-  }
+ abrirHistorico(card: Card): void {
+  this.cardSelecionado = card;
+  this.historicoModalAberto = true;
+}
+
 
   fecharHistorico(): void {
     this.historicoModalAberto = false;
     this.cardSelecionado = null;
   }
 
-  salvarHistorico(novoHistorico: any): void {
-    if (!this.cardSelecionado) return;
+  salvarHistorico(cardAtualizado: Card): void {
+  if (!cardAtualizado) return;
 
-    if (!this.cardSelecionado.historico) {
-      this.cardSelecionado.historico = [];
+  // Atualiza o card na lista
+  this.colunas.forEach(coluna => {
+    const idx = coluna.cards.findIndex(c => c.id === cardAtualizado.id);
+    if (idx !== -1) {
+      coluna.cards[idx] = cardAtualizado;
     }
+  });
 
-    this.cardSelecionado.historico.push(novoHistorico);
-
-    this.fecharHistorico();
-  }
+  // NÃO FECHAR O MODAL AQUI!
+  // this.fecharHistorico();
+}
   abrirEdicao(card: Card) {
   // Aqui você abre seu modal de edição já com os dados preenchidos
   console.log('Editar', card);

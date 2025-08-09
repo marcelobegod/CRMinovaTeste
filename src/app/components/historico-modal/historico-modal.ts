@@ -56,73 +56,54 @@ export class HistoricoModalComponent {
   }
 
   salvarRegistro() {
-    if (!this.card) return;
+  if (!this.card) return;
 
-    if (!this.novaAtividade.trim()) {
-      alert('Atividade é obrigatória');
-      return;
+  // validações ...
+
+  if (this.registroEditando) {
+    // atualizar registro
+    if (!this.registroEditando.concluida) {
+      this.registroEditando.atividade = this.novaAtividade;
+      this.registroEditando.descricao = this.novaDescricao;
+      this.registroEditando.data = new Date(this.dataInputISO);
     }
-
-    if (!this.dataInputISO) {
-      alert('Data é obrigatória');
-      return;
-    }
-
-    const dataConvertida = new Date(this.dataInputISO);
-    if (isNaN(dataConvertida.getTime())) {
-      alert('Data inválida');
-      return;
-    }
-
-    if (!this.card.historico) {
-      this.card.historico = [];
-    }
-
-    if (this.registroEditando) {
-      // Atualiza registro existente só se não concluído
-      if (!this.registroEditando.concluida) {
-        this.registroEditando.atividade = this.novaAtividade;
-        this.registroEditando.descricao = this.novaDescricao;
-        this.registroEditando.data = dataConvertida;
-      }
-      this.registroEditando = null;
-    } else {
-      // Novo registro
-      const novoRegistro: Registro = {
-        id: this.gerarId(),
-        atividade: this.novaAtividade,
-        descricao: this.novaDescricao,
-        data: dataConvertida,
-        concluida: false
-      };
-      this.card.historico.push(novoRegistro);
-    }
-
-    this.atualizar.emit(this.card);
-    this.limparCampos();
+    this.registroEditando = null;
+  } else {
+    // criar novo registro
+    this.card.historico = this.card.historico || [];
+    this.card.historico.push({
+      id: this.gerarId(),
+      atividade: this.novaAtividade,
+      descricao: this.novaDescricao,
+      data: new Date(this.dataInputISO),
+      concluida: false
+    });
   }
+
+  this.atualizar.emit(this.card);
+
+  // NÃO fechar o modal aqui
+  this.limparCampos();
+}
 
   concluirAtividade() {
-    if (!this.registroEditando) return;
-    if (this.registroEditando.concluida) return;
+  if (!this.registroEditando || this.registroEditando.concluida) return;
 
-    const hoje = new Date();
-    let dataAtividade = new Date(this.dataInputISO);
+  const hoje = new Date();
+  let dataAtividade = new Date(this.dataInputISO);
 
-    // Se a data da atividade for futura, usa a data atual
-    if (dataAtividade > hoje) {
-      dataAtividade = hoje;
-    }
+  if (dataAtividade > hoje) dataAtividade = hoje;
 
-    this.registroEditando.data = dataAtividade;
-    this.registroEditando.concluida = true;
+  this.registroEditando.data = dataAtividade;
+  this.registroEditando.concluida = true;
+  this.dataInputISO = this.formatarDataISO(dataAtividade);
 
-    this.dataInputISO = this.formatarDataISO(dataAtividade);
-
-    if (this.card) {
-      this.atualizar.emit(this.card);
-    }
+  if (this.card) {
+    this.atualizar.emit(this.card);
   }
+
+  // NÃO fechar o modal aqui
+}
 
   limparCampos() {
     this.novaAtividade = '';
@@ -151,5 +132,16 @@ export class HistoricoModalComponent {
     const mes = ('0' + (d.getMonth() + 1)).slice(-2);
     const ano = d.getFullYear();
     return `${dia}/${mes}/${ano}`;
+  }
+
+  historicoOrdenado() {
+    if (!this.card?.historico) return [];
+
+    const naoConcluidas = this.card.historico.filter(r => !r.concluida);
+    const concluidas = this.card.historico
+      .filter(r => r.concluida)
+      .sort((a, b) => b.data.getTime() - a.data.getTime());
+
+    return [...naoConcluidas, ...concluidas];
   }
 }
