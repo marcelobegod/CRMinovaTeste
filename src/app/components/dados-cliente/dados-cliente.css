@@ -1,7 +1,8 @@
 .dados-cliente {
+  flex: 0 0 40%;
   background-color: #fff;
   border-radius: 0.5rem;
-  padding: 1.5rem 2rem;
+  padding: 1.0rem 2rem;
   box-shadow: 0 0 15px rgb(0 0 0 / 0.1);
   max-width: 480px;
   width: 100%;

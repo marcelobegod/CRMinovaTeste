@@ -15,9 +15,10 @@
 .modal-content.custom-modal-content {
   background-color: #fff;
   border-radius: 0.5rem;
-  max-width: 900px;
+  max-width: 1200px;
   width: 100%;
-  max-height: 90vh;
+  max-height: 95vh;
+  max-width:fit-content;
   overflow-y: auto;
   padding: 2rem 2.5rem;
   display: flex;
@@ -61,11 +62,13 @@
 }
 
 /* Cabeçalhos */
-h4 {
+h3 {
   font-weight: 700;
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-  color: #343a40;
+  font-size: 1.6rem;
+  color: #0d6efd;
+  margin-bottom: 1.25rem;
+  border-bottom: 2px solid #0d6efd;
+  padding-bottom: 0.3rem;
 }
 
 h5 {
@@ -86,35 +89,38 @@ h5 {
 }
 
 .list-group-item {
-  background: transparent;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-bottom: 1px solid #dee2e6;
-  transition: background-color 0.15s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: nowrap;
 }
 
-.list-group-item:last-child {
-  border-bottom: none;
+/* Área de textos da atividade */
+.registro-textos {
+  flex: 1 1 auto;
+  min-width: 0; /* Necessário para o truncamento funcionar */
 }
 
-.list-group-item:hover {
-  background-color: #e9ecef;
-  cursor: pointer;
-}
-
-.registro-textos .fw-bold {
-  font-weight: 600;
-  font-size: 1rem;
-  color: #212529;
-}
-
+/* Truncamento com reticências */
+.registro-textos .fw-bold,
 .descricao-texto {
-  font-size: 0.9rem;
-  color: #495057;
-  margin-top: 0.15rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
 }
 
-/* Botões da lista */
+/* Área dos botões */
+.acao-botoes {
+  flex-shrink: 0; /* impede que os botões diminuam demais */
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  min-width: fit-content;
+}
+
+/* Botões gerais */
 .btn-outline-primary {
   font-size: 0.8rem;
   padding: 0.25rem 0.6rem;
@@ -127,13 +133,20 @@ h5 {
   border-color: #0d6efd;
 }
 
-/* Ícone de concluído */
-.text-success {
-  font-size: 1.3rem;
-  user-select: none;
+/* Botão Concluir */
+.btn-success {
+  font-weight: 700;
+  padding: 0.25rem 0.5rem;
+  font-size: 1rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 32px;
 }
 
-/* Formulário de atividades */
+/* Formulário */
 form {
   margin-top: 1rem;
 }
@@ -166,36 +179,44 @@ textarea {
   min-height: 80px;
 }
 
-/* Botões no formulário */
-.d-flex.justify-content-end.gap-2.mt-2 button {
-  min-width: 100px;
-  font-weight: 600;
-  transition: background-color 0.2s ease;
+@media (min-width: 768px) {
+  .modal-body-flex {
+    flex-direction: row;
+  }
+  .dados-cliente {
+    border-right: 1px solid #ddd;
+    min-width: 400px;
+  }
+  .historico {
+    flex: 0 0 60%; /* mais espaço para o histórico */
+    padding-left: 0rem;
+  }
 }
 
-.btn-secondary {
-  background-color: #6c757d;
-  border-color: #6c757d;
-}
-.btn-secondary:hover {
-  background-color: #5a6268;
-  border-color: #545b62;
-}
-
-.btn-primary {
-  background-color: #0d6efd;
-  border-color: #0d6efd;
-}
-.btn-primary:hover {
-  background-color: #0b5ed7;
-  border-color: #0a58ca;
+/* Lista de histórico */
+.list-group-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.5rem;
+  flex-wrap: nowrap;
 }
 
-.btn-success {
-  background-color: #198754;
-  border-color: #198754;
+/* Texto pode quebrar de linha sem empurrar botões */
+.registro-textos .fw-bold,
+.descricao-texto {
+  white-space: normal;      /* permite quebra de linha */
+  word-wrap: break-word;    /* quebra palavras longas */
+  overflow-wrap: break-word;
+  display: block;
+  margin-bottom: 0.25rem;
 }
-.btn-success:hover {
-  background-color: #157347;
-  border-color: #146c43;
+
+/* Área dos botões - fixa e não encolhe */
+.acao-botoes,
+.d-flex.align-items-start.gap-1 {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
 }

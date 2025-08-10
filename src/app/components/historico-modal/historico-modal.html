@@ -19,7 +19,7 @@
 
       <!-- Histórico + formulário -->
       <div class="historico">
-        <h4>Histórico do Cliente</h4>
+        <h3>Histórico do Cliente</h3>
 
         <!-- Lista de registros -->
         <div *ngIf="card?.historico?.length" class="mb-3">
@@ -27,9 +27,10 @@
           <ul class="list-group registros-lista">
             <li
               *ngFor="let registro of historicoOrdenado()"
-              class="list-group-item d-flex justify-content-between align-items-start"
+              class="list-group-item"
             >
-              <div class="flex-grow-1 me-3 registro-textos">
+              <!-- Texto -->
+              <div class="registro-textos">
                 <div class="fw-bold">
                   {{ registro.atividade }} — {{ formatarData(registro.data) }}
                 </div>
@@ -37,36 +38,37 @@
                   {{ registro.descricao }}
                 </div>
               </div>
-              <div class="d-flex align-items-start gap-1">
-  <ng-container *ngIf="!registro.concluida; else concluidoTemplate">
-    <button
-      class="btn btn-sm btn-outline-primary"
-      (click)="editarRegistro(registro)"
-      style="white-space: nowrap;"
-    >
-      Editar
-    </button>
 
-    <!-- Botão Concluir atividade -->
-    <button
-      class="btn btn-sm btn-success"
-      (click)="concluirAtividadeRegistro(registro)"
-      title="Concluir atividade"
-    >
-      ✔
-    </button>
-  </ng-container>
-  <ng-template #concluidoTemplate>
-    <span
-      class="text-success fw-semibold"
-      [title]="'Atividade concluída em ' + formatarData(registro.data)"
-      style="font-size: 1.2rem; cursor: default; user-select: none;"
-    >
-      ✔
-    </span>
-  </ng-template>
-</div>
+              <!-- Botões -->
+              <div class="acao-botoes">
+                <ng-container *ngIf="!registro.concluida; else concluidoTemplate">
+                  <button
+                    class="btn btn-sm btn-outline-primary"
+                    (click)="editarRegistro(registro)"
+                    style="white-space: nowrap;"
+                  >
+                    Editar
+                  </button>
 
+                  <button
+                    class="btn btn-sm btn-success"
+                    (click)="concluirAtividadeRegistro(registro)"
+                    title="Concluir atividade"
+                  >
+                    ✔
+                  </button>
+                </ng-container>
+
+                <ng-template #concluidoTemplate>
+                  <span
+                    class="text-success fw-semibold"
+                    [title]="'Atividade concluída em ' + formatarData(registro.data)"
+                    style="font-size: 1.2rem; cursor: default; user-select: none;"
+                  >
+                    ✔
+                  </span>
+                </ng-template>
+              </div>
             </li>
           </ul>
         </div>

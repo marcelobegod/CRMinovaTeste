@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HistoricoList } from './historico-list';
+import { HistoricoListComponent } from './historico-list';
 
 describe('HistoricoList', () => {
-  let component: HistoricoList;
-  let fixture: ComponentFixture<HistoricoList>;
+  let component: HistoricoListComponent;
+  let fixture: ComponentFixture<HistoricoListComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HistoricoList]
+      imports: [HistoricoListComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(HistoricoList);
+    fixture = TestBed.createComponent(HistoricoListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
