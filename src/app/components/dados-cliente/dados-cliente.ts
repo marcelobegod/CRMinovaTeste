@@ -12,10 +12,16 @@ import { Card } from '../../shared/models/card.model';
 })
 export class DadosClienteComponent {
   @Input() card!: Card;
-
   @Output() atualizar = new EventEmitter<Card>();
 
-  emitirAtualizacao() {
+  editando = false;
+
+  habilitarEdicao() {
+    this.editando = true;
+  }
+
+  salvarAlteracoes() {
+    this.editando = false;
     this.atualizar.emit(this.card);
   }
 }

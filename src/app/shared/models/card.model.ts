@@ -6,6 +6,11 @@ export interface Card {
   valorNegocio: string;
   criadoPor: string;
   historico?: any[];
+  // outros campos...
+  email?: string;
+  endereco?: string;
+  cpfCnpj?: string;
+  telefone?: string;
 }
 
 export interface HistoricoItem {

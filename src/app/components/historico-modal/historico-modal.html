@@ -19,9 +19,25 @@
 
       <!-- Histórico + formulário -->
       <div class="historico">
+
+        <!-- Título do formulário -->
+        <h3 class="mb-3">Nova Atividade</h3>
+
+        <!-- Formulário -->
+        <app-historico-form
+          [atividade]="novaAtividade"
+          [descricao]="novaDescricao"
+          [dataISO]="dataInputISO"
+          [concluida]="registroEditando?.concluida ?? false"
+          (salvarRegistro)="salvar($event)"
+        ></app-historico-form>
+
+        <!-- Linha divisória -->
+        <hr class="my-4" />
+
+        <!-- Título e lista de registros -->
         <h3>Histórico do Cliente</h3>
 
-        <!-- Lista de registros -->
         <div *ngIf="card?.historico?.length" class="mb-3">
           <h5>Registros:</h5>
           <ul class="list-group registros-lista">
@@ -72,15 +88,6 @@
             </li>
           </ul>
         </div>
-
-        <!-- Formulário de histórico separado -->
-        <app-historico-form
-          [atividade]="novaAtividade"
-          [descricao]="novaDescricao"
-          [dataISO]="dataInputISO"
-          [concluida]="registroEditando?.concluida ?? false"
-          (salvarRegistro)="salvar($event)"
-        ></app-historico-form>
       </div>
     </div>
   </div>
