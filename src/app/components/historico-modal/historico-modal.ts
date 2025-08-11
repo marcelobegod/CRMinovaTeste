@@ -148,15 +148,33 @@ export class HistoricoModalComponent {
     return `${ano}-${mes}-${dia}`;
   }
 
-  // Formata data para exibição dd/MM/yyyy
+  // Formata data para exibição dd/MM/yyyy hour
   formatarData(data: Date): string {
-    if (!data) return '';
-    const d = new Date(data);
-    const dia = ('0' + d.getDate()).slice(-2);
-    const mes = ('0' + (d.getMonth() + 1)).slice(-2);
-    const ano = d.getFullYear();
-    return `${dia}/${mes}/${ano}`;
-  }
+  if (!data) return '';
+
+  const formatador = new Intl.DateTimeFormat('pt-BR', {
+    timeZone: 'America/Sao_Paulo',
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false
+  });
+
+  return formatador.format(new Date(data));
+}
+
+formatarDataSomenteData(data: Date): string {
+  if (!data) return '';
+  const formatador = new Intl.DateTimeFormat('pt-BR', {
+    timeZone: 'America/Sao_Paulo',
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric'
+  });
+  return formatador.format(new Date(data));
+}
 
   // Ordena o histórico: não concluídas primeiro, depois concluídas por data decrescente
   historicoOrdenado(): Registro[] {
@@ -169,4 +187,5 @@ export class HistoricoModalComponent {
 
     return [...naoConcluidas, ...concluidas];
   }
+
 }

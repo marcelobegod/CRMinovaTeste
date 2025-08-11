@@ -1,11 +1,8 @@
 .dados-cliente {
-  flex: 0 0 40%;
   background-color: #fff;
   border-radius: 0.5rem;
   padding: 1rem 1rem;
   box-shadow: 0 0 15px rgb(0 0 0 / 0.1);
-  max-width: 100%;
-  width: 100%;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
@@ -22,16 +19,12 @@
   color: #495057;
   font-size: 0.95rem;
   width: 100%;
-}
-
-.dados-cliente input.form-control[readonly] {
-  background-color: #f8f9fa;
-  cursor: not-allowed;
-  height: 30px;
+  max-width: 400px;
 }
 
 .dados-cliente input.form-control {
-
+  height: 30px; /* <--- adicionado */
+  width: 100%;
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
@@ -43,4 +36,14 @@
 
 .dados-cliente .mb-2 {
   margin-bottom: 1rem !important;
+}
+
+.dados-cliente input.form-control[readonly] {
+  background-color: #f8f9fa;
+  cursor: not-allowed;
+  opacity: 0.5;
+  pointer-events: none; /* impede foco e clique */
+  /* remover sombra de foco caso alguém tente focar */
+  box-shadow: none !important;
+  border-color: #ced4da; /* cor de borda padrão, sem destaque */
 }

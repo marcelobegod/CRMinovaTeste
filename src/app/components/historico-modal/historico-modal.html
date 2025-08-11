@@ -19,10 +19,6 @@
 
       <!-- Histórico + formulário -->
       <div class="historico">
-
-        <!-- Título do formulário -->
-        <h3 class="mb-3">Nova Atividade</h3>
-
         <!-- Formulário -->
         <app-historico-form
           [atividade]="novaAtividade"
@@ -33,13 +29,12 @@
         ></app-historico-form>
 
         <!-- Linha divisória -->
-        <hr class="my-4" />
+        <hr />
 
         <!-- Título e lista de registros -->
-        <h3>Histórico do Cliente</h3>
+        <h3>Histórico de Atividades</h3>
 
-        <div *ngIf="card?.historico?.length" class="mb-3">
-          <h5>Registros:</h5>
+        <div *ngIf="card?.historico?.length">
           <ul class="list-group registros-lista">
             <li
               *ngFor="let registro of historicoOrdenado()"
@@ -48,8 +43,14 @@
               <!-- Texto -->
               <div class="registro-textos">
                 <div class="fw-bold">
-                  {{ registro.atividade }} — {{ formatarData(registro.data) }}
-                </div>
+  {{ registro.atividade }}:
+  <span *ngIf="registro.concluida" class="texto-concluido">
+    Concluído em {{ formatarData(registro.data) }}
+  </span>
+  <span *ngIf="!registro.concluida">
+    {{ formatarDataSomenteData(registro.data) }}
+  </span>
+</div>
                 <div class="descricao-texto">
                   {{ registro.descricao }}
                 </div>
@@ -67,7 +68,7 @@
                   </button>
 
                   <button
-                    class="btn btn-sm btn-success"
+                    class="btn btn-sm btn-success btn-ativ"
                     (click)="concluirAtividadeRegistro(registro)"
                     title="Concluir atividade"
                   >
@@ -79,7 +80,7 @@
                   <span
                     class="text-success fw-semibold"
                     [title]="'Atividade concluída em ' + formatarData(registro.data)"
-                    style="font-size: 1.2rem; cursor: default; user-select: none;"
+                    style="font-size: 1rem; cursor: default; user-select: none;"
                   >
                     ✔
                   </span>
