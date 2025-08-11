@@ -71,12 +71,15 @@ h3 {
 }
 /* Lista de histórico */
 .registros-lista {
-  max-height: 100%;
+  max-height: 400px; /* altura fixa ou variável conforme o layout */
   overflow-y: auto;
   border: 1px solid #dee2e6;
   border-radius: 0.375rem;
   background: #f8f9fa;
+  width: 100%; /* para não ultrapassar a largura do pai */
+  box-sizing: border-box;
 }
+
 
 .list-group-item {
   display: flex;
