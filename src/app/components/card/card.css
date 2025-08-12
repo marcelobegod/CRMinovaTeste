@@ -67,3 +67,20 @@
 .btn-icone:hover {
   color: #0d6efd; /* azul bootstrap */
 }
+
+/* Só a cor de fundo e borda são sobrescritas aqui: */
+
+.fundo-verde {
+  background-color: #d4edda !important; /* verde claro */
+  border-color: #28a745 !important;
+}
+
+.fundo-vermelho {
+  background-color: #f8d7da !important; /* vermelho claro */
+  border-color: #dc3545 !important;
+}
+
+.fundo-cinza {
+  background-color: #e2e3e5 !important; /* cinza claro */
+  border-color: rgba(0, 0, 0, 0.125) !important;
+}

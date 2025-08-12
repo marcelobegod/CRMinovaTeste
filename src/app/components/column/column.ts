@@ -1,8 +1,12 @@
+import { CardComponent } from './../card/card';
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DragDropModule, CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Card } from '../../shared/models/card.model';
-import { CardComponent } from '../card/card';
+// import { CardComponent } from '../card/card';
+
+
+
 @Component({
   selector: 'app-column',
   standalone: true,
@@ -41,14 +45,18 @@ export class ColumnComponent {
     this.cardClicked.emit(card);
   }
 
-@Output() editarCard = new EventEmitter<Card>();
-@Output() excluirCard = new EventEmitter<Card>();
+  @Output() editarCard = new EventEmitter<Card>();
+  @Output() excluirCard = new EventEmitter<Card>();
 
-onEditarCard(card: Card) {
-  this.editarCard.emit(card);
-}
+  onEditarCard(card: Card) {
+    this.editarCard.emit(card);
+  }
 
-onExcluirCard(card: Card) {
-  this.excluirCard.emit(card);
+  onExcluirCard(card: Card) {
+    this.excluirCard.emit(card);
+  }
+
+  trackById(index: number, card: any): any {
+  return card.id;
 }
 }

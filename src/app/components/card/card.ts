@@ -11,22 +11,50 @@ import { Card } from '../../shared/models/card.model';
 })
 export class CardComponent {
   @Input() card!: Card;
+
   @Output() cardClicked = new EventEmitter<Card>();
   @Output() editarCard = new EventEmitter<Card>();
   @Output() excluirCard = new EventEmitter<Card>();
 
-  onEditar(event: MouseEvent) {
-  event.stopPropagation(); // Impede de abrir modal de atividades
-  this.editarCard.emit(this.card);
-  }
+  // Calcula o status para definir a cor do fundo do card
+  get statusCor(): 'verde' | 'vermelho' | 'cinza' {
+    if (!this.card?.historico || this.card.historico.length === 0) {
+      return 'cinza';
+    }
 
-  onExcluir(event: MouseEvent) {
-  event.stopPropagation();
-  this.excluirCard.emit(this.card);
+    // Pega a última atividade do histórico
+    const ultimaAtividade = this.card.historico[this.card.historico.length - 1];
+
+    // Converte a data para Date (garantindo que funcione caso venha string)
+    const dataAtividade = new Date(ultimaAtividade.data);
+
+    // Se data for inválida, retorna cinza para evitar erros
+    if (isNaN(dataAtividade.getTime())) {
+      console.warn('Data inválida na última atividade do card:', ultimaAtividade.data);
+      return 'cinza';
+    }
+
+    const hoje = new Date();
+
+    // Zerando horas para comparar só a data
+    hoje.setHours(0, 0, 0, 0);
+    dataAtividade.setHours(0, 0, 0, 0);
+
+    if (dataAtividade.getTime() === hoje.getTime()) {
+      return 'verde';  // Atividade para hoje
+    } else if (dataAtividade.getTime() < hoje.getTime()) {
+      return 'vermelho'; // Atividade passada
+    } else {
+      return 'cinza';  // Atividade futura
+    }
   }
 
   onClick() {
-  this.cardClicked.emit(this.card);
+    this.cardClicked.emit(this.card);
   }
 
+  onExcluir(event: MouseEvent) {
+    event.stopPropagation();
+    this.excluirCard.emit(this.card);
+  }
 }

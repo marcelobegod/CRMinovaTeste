@@ -1,12 +1,16 @@
-<div class="card-container" (click)="onClick()" tabindex="0">
+<div
+  class="card-container"
+  [ngClass]="{
+    'fundo-verde': statusCor === 'verde',
+    'fundo-vermelho': statusCor === 'vermelho',
+    'fundo-cinza': statusCor === 'cinza'
+  }"
+  (click)="onClick()"
+  tabindex="0"
+>
   <div class="titulo-container">
     <strong class="titulo">{{ card.negocio }}</strong>
     <div class="acoes">
-      <!-- Botão Editar -->
-      <button class="btn-icone" (click)="onEditar($event)">
-        <i class="bi bi-pencil"></i>
-      </button>
-      <!-- Botão Excluir -->
       <button class="btn-icone" (click)="onExcluir($event)">
         <i class="bi bi-trash"></i>
       </button>
