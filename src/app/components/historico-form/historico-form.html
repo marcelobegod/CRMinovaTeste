@@ -1,51 +1,53 @@
 <form (ngSubmit)="onSalvar()">
-      <div class="row g-3 align-items-center">
-        <div class="col-6">
-          <label for="atividadeSelect" class="form-label">Atividade:</label>
-          <select
-            id="atividadeSelect"
-            class="form-select"
-            [(ngModel)]="atividade"
-            name="atividade"
-            [disabled]="concluida"
-            required
-          >
-            <option value="" disabled>Selecione</option>
-            <option value="Ligar">Ligar</option>
-            <option value="Email">Email</option>
-            <option value="Mensagem">Mensagem</option>
-          </select>
-        </div>
+  <div class="row g-3 align-items-center">
+    <div class="col-6">
+      <label for="atividadeSelect" class="form-label">Atividade:</label>
+      <select
+        id="atividadeSelect"
+        class="form-select"
+        [(ngModel)]="atividade"
+        name="atividade"
+        [disabled]="concluida"
+        required
+      >
+        <option value="" disabled>Selecione</option>
+        <option value="Ligar">Ligar</option>
+        <option value="Email">Email</option>
+        <option value="Mensagem">Mensagem</option>
+      </select>
+    </div>
 
-        <div class="col-6">
-          <label for="dataInput" class="form-label">Data:</label>
-          <input
-            id="dataInput"
-            type="date"
-            class="form-control"
-            [(ngModel)]="dataISO"
-            name="dataISO"
-            [disabled]="concluida"
-            required
-          />
-        </div>
-      </div>
+    <div class="col-6">
+      <label for="dataInput" class="form-label">Data:</label>
+      <input
+        id="dataInput"
+        type="date"
+        class="form-control"
+        [(ngModel)]="dataISO"
+        name="dataISO"
+        [disabled]="concluida"
+        required
+      />
+    </div>
+  </div>
 
-      <div>
-        <label for="descricaoInput" class="form-label">Descrição:</label>
-        <textarea
-          id="descricaoInput"
-          class="form-control"
-          rows="3"
-          [(ngModel)]="descricao"
-          name="descricao"
-          placeholder="Descrição da atividade"
-          [disabled]="concluida"
-          required
-        ></textarea>
-      </div>
+  <div>
+    <label for="descricaoInput" class="form-label">Descrição:</label>
+    <textarea
+      id="descricaoInput"
+      class="form-control"
+      rows="3"
+      [(ngModel)]="descricao"
+      name="descricao"
+      placeholder="Descrição da atividade"
+      [disabled]="concluida"
+      required
+    ></textarea>
+  </div>
 
-      <div class="d-flex justify-content-end gap-2">
-        <button type="submit" class="btn btn-primary" [disabled]="concluida">Salvar</button>
-      </div>
-    </form>
+  <div class="d-flex justify-content-end gap-2 mt-3">
+    <button type="submit" class="btn btn-primary" [disabled]="concluida">
+      Salvar
+    </button>
+  </div>
+</form>

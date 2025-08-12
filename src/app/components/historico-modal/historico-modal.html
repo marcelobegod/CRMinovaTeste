@@ -1,4 +1,10 @@
-<div *ngIf="visible" class="modal-backdrop" role="dialog" aria-modal="true" tabindex="-1">
+<div
+  *ngIf="visible"
+  class="modal-backdrop"
+  role="dialog"
+  aria-modal="true"
+  tabindex="-1"
+>
   <div class="modal-content custom-modal-content position-relative">
     <button
       type="button"
@@ -8,7 +14,6 @@
       style="top: 1rem; right: 1rem;"
     ></button>
 
-    <!-- Container flexível para dados e histórico lado a lado -->
     <div class="modal-body-flex">
       <!-- Dados do cliente -->
       <app-dados-cliente
@@ -17,9 +22,9 @@
         class="dados-cliente"
       ></app-dados-cliente>
 
-      <!-- Histórico + formulário -->
+      <!-- Histórico e formulário lado a lado -->
       <div class="historico">
-        <!-- Formulário -->
+        <!-- Formulário para nova atividade / edição -->
         <app-historico-form
           [atividade]="novaAtividade"
           [descricao]="novaDescricao"
@@ -28,35 +33,26 @@
           (salvarRegistro)="salvar($event)"
         ></app-historico-form>
 
-        <!-- Linha divisória -->
         <hr />
 
-        <!-- Título e lista de registros -->
         <h3>Histórico de Atividades</h3>
 
         <div *ngIf="card?.historico?.length">
           <ul class="list-group registros-lista">
-            <li
-              *ngFor="let registro of historicoOrdenado()"
-              class="list-group-item"
-            >
-              <!-- Texto -->
+            <li *ngFor="let registro of historicoOrdenado()" class="list-group-item">
               <div class="registro-textos">
                 <div class="fw-bold">
-  {{ registro.atividade }}:
-  <span *ngIf="registro.concluida" class="texto-concluido">
-    Concluído em {{ formatarData(registro.data) }}
-  </span>
-  <span *ngIf="!registro.concluida">
-    {{ formatarDataSomenteData(registro.data) }}
-  </span>
-</div>
-                <div class="descricao-texto">
-                  {{ registro.descricao }}
+                  {{ registro.atividade }}:
+                  <span *ngIf="registro.concluida" class="texto-concluido">
+                    Concluído em {{ formatarData(registro.data) }}
+                  </span>
+                  <span *ngIf="!registro.concluida">
+                    {{ formatarDataSomenteData(registro.data) }}
+                  </span>
                 </div>
+                <div class="descricao-texto">{{ registro.descricao }}</div>
               </div>
 
-              <!-- Botões -->
               <div class="acao-botoes">
                 <ng-container *ngIf="!registro.concluida; else concluidoTemplate">
                   <button
@@ -66,7 +62,6 @@
                   >
                     Editar
                   </button>
-
                   <button
                     class="btn btn-sm btn-success btn-ativ"
                     (click)="concluirAtividadeRegistro(registro)"

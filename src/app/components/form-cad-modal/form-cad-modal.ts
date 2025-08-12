@@ -1,24 +1,24 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 import { Card } from '../../shared/models/card.model';
-
-// Import UUID
 import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'form-cad-modal',
   standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    NgxMaskDirective
-  ],
+  imports: [CommonModule, ReactiveFormsModule, NgxMaskDirective],
   providers: [provideNgxMask()],
-  templateUrl: './form-cad-modal.html'
+  templateUrl: './form-cad-modal.html',
 })
 export class FormCadModalComponent {
+  // Evento para criar novo card
   @Output() criarCard = new EventEmitter<Card>();
 
   cadastroForm: FormGroup;
@@ -26,6 +26,7 @@ export class FormCadModalComponent {
   mostrarMaisInfos = false;
 
   constructor(private fb: FormBuilder) {
+    // Define os campos do formulário com validações
     this.cadastroForm = this.fb.group({
       negocio: ['', [Validators.required, Validators.minLength(2)]],
       nome: ['', [Validators.required, Validators.minLength(3)]],
@@ -35,17 +36,20 @@ export class FormCadModalComponent {
       cpfCnpj: [''],
       servicoDesejado: [''],
       valorNegocio: [''],
-      contatoInicial: ['']
+      contatoInicial: [''],
     });
   }
 
+  /**
+   * Formata o valor monetário para exibição padrão BRL.
+   */
   formatarValor(valor: any): string {
     if (!valor) return 'R$ 0,00';
 
     let numero = Number(
       valor
         .toString()
-        .replace(/[^\d,]/g, '')  // remove letras, R$, etc
+        .replace(/[^\d,]/g, '') // Remove letras, R$, etc
         .replace(',', '.')
     );
 
@@ -54,21 +58,31 @@ export class FormCadModalComponent {
     return numero.toLocaleString('pt-BR', {
       style: 'currency',
       currency: 'BRL',
-      minimumFractionDigits: 2
+      minimumFractionDigits: 2,
     });
   }
 
-  abrirModal() {
+  /**
+   * Abre o modal
+   */
+  abrirModal(): void {
     this.mostrarModal = true;
   }
 
-  fecharModal() {
+  /**
+   * Fecha o modal e reseta o formulário e campos extras
+   */
+  fecharModal(): void {
     this.mostrarModal = false;
     this.mostrarMaisInfos = false;
     this.cadastroForm.reset();
   }
 
-  onSubmit() {
+  /**
+   * Envia os dados do formulário criando um novo card,
+   * só se o formulário for válido.
+   */
+  onSubmit(): void {
     if (this.cadastroForm.invalid) {
       this.cadastroForm.markAllAsTouched();
       this.cadastroForm.markAsDirty();
@@ -81,7 +95,7 @@ export class FormCadModalComponent {
       nome: this.cadastroForm.value.nome,
       servicoDesejado: this.cadastroForm.value.servicoDesejado,
       valorNegocio: this.formatarValor(this.cadastroForm.value.valorNegocio),
-      criadoPor: 'Usuário Logado'
+      criadoPor: 'Usuário Logado',
     };
 
     this.criarCard.emit(novoCard);

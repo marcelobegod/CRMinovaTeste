@@ -32,36 +32,31 @@ interface Card {
   styleUrls: ['./historico-modal.css']
 })
 export class HistoricoModalComponent {
-  // Recebe o card (cliente) a ser editado
-  @Input() card: Card | null = null;
+  @Input() card: Card | null = null;       // Card atual
+  @Input() visible = false;                 // Visibilidade do modal
+  @Output() fechar = new EventEmitter<void>();  // Evento fechar modal
+  @Output() atualizar = new EventEmitter<Card>(); // Evento atualizar card
 
-  // Controle de visibilidade do modal
-  @Input() visible = false;
-
-  // Emite evento para fechar o modal
-  @Output() fechar = new EventEmitter<void>();
-
-  // Emite evento quando o card é atualizado (dados ou histórico)
-  @Output() atualizar = new EventEmitter<Card>();
-
-  // Variáveis para o formulário de nova atividade
   novaAtividade = '';
   novaDescricao = '';
   dataInputISO = '';
 
-  // Registro que está sendo editado (se houver)
   registroEditando: Registro | null = null;
 
-  // Fecha o modal, limpa campos e emite evento para o componente pai
+  // --- Função para interpretar data ISO como local (sem aplicar fuso horário UTC) ---
+  private parseDateLocal(dateString: string): Date {
+    const [year, month, day] = dateString.split('-').map(Number);
+    return new Date(year, month - 1, day);
+  }
+
   fecharModal() {
     this.visible = false;
     this.limparCampos();
     this.fechar.emit();
   }
 
-  // Prepara o modal para edição de um registro específico
   editarRegistro(registro: Registro) {
-    if (registro.concluida) return; // Não permite editar registros concluídos
+    if (registro.concluida) return;
 
     this.registroEditando = registro;
     this.novaAtividade = registro.atividade;
@@ -69,7 +64,6 @@ export class HistoricoModalComponent {
     this.dataInputISO = this.formatarDataISO(registro.data);
   }
 
-  // Salva um novo registro ou atualiza o registro editado
   salvar(event: { atividade: string; descricao: string; data: string }) {
     if (!this.card) return;
 
@@ -78,7 +72,8 @@ export class HistoricoModalComponent {
       if (!this.registroEditando.concluida) {
         this.registroEditando.atividade = event.atividade;
         this.registroEditando.descricao = event.descricao;
-        this.registroEditando.data = new Date(event.data);
+        // <-- CORREÇÃO: usa parseDateLocal para evitar problema de fuso horário
+        this.registroEditando.data = this.parseDateLocal(event.data);
       }
       this.registroEditando = null;
     } else {
@@ -88,44 +83,38 @@ export class HistoricoModalComponent {
         id: this.gerarId(),
         atividade: event.atividade,
         descricao: event.descricao,
-        data: new Date(event.data),
+        // <-- CORREÇÃO: usa parseDateLocal para evitar problema de fuso horário
+        data: this.parseDateLocal(event.data),
         concluida: false
       });
     }
 
-    // Emite evento para informar que o card foi atualizado
     this.atualizar.emit(this.card);
-
-    // Limpa campos para nova entrada
     this.limparCampos();
   }
 
-  // Marca a atividade atual como concluída e ajusta a data se necessário
   concluirAtividadeRegistro(registro: Registro) {
-  if (registro.concluida) return;
+    if (registro.concluida) return;
 
-  const hoje = new Date();
-  let dataAtividade = new Date();
+    const hoje = new Date();
+    let dataAtividade = new Date();
 
-  // Ajusta a data para hoje se for futura
-  if (dataAtividade > hoje) dataAtividade = hoje;
+    // Ajusta a data para hoje se for futura
+    if (dataAtividade > hoje) dataAtividade = hoje;
 
-  registro.data = dataAtividade;
-  registro.concluida = true;
+    registro.data = dataAtividade;
+    registro.concluida = true;
 
-  // Se estiver editando este registro, limpa o estado de edição
-  if (this.registroEditando && this.registroEditando.id === registro.id) {
-    this.registroEditando = null;
-    this.limparCampos();
+    if (this.registroEditando && this.registroEditando.id === registro.id) {
+      this.registroEditando = null;
+      this.limparCampos();
+    }
+
+    if (this.card) {
+      this.atualizar.emit(this.card);
+    }
   }
 
-  if (this.card) {
-    this.atualizar.emit(this.card);
-  }
-}
-
-
-  // Limpa os campos do formulário e reseta o registro em edição
   limparCampos() {
     this.novaAtividade = '';
     this.novaDescricao = '';
@@ -133,12 +122,10 @@ export class HistoricoModalComponent {
     this.registroEditando = null;
   }
 
-  // Gera um ID simples para novos registros (não recomendado para produção)
   gerarId(): string {
     return Math.random().toString(36).substring(2, 9);
   }
 
-  // Formata uma data para o padrão ISO yyyy-MM-dd para input type="date"
   formatarDataISO(data: Date): string {
     if (!data) return '';
     const d = new Date(data);
@@ -148,35 +135,33 @@ export class HistoricoModalComponent {
     return `${ano}-${mes}-${dia}`;
   }
 
-  // Formata data para exibição dd/MM/yyyy hour
   formatarData(data: Date): string {
-  if (!data) return '';
+    if (!data) return '';
 
-  const formatador = new Intl.DateTimeFormat('pt-BR', {
-    timeZone: 'America/Sao_Paulo',
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: false
-  });
+    const formatador = new Intl.DateTimeFormat('pt-BR', {
+      timeZone: 'America/Sao_Paulo',
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false
+    });
 
-  return formatador.format(new Date(data));
-}
+    return formatador.format(new Date(data));
+  }
 
-formatarDataSomenteData(data: Date): string {
-  if (!data) return '';
-  const formatador = new Intl.DateTimeFormat('pt-BR', {
-    timeZone: 'America/Sao_Paulo',
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric'
-  });
-  return formatador.format(new Date(data));
-}
+  formatarDataSomenteData(data: Date): string {
+    if (!data) return '';
+    const formatador = new Intl.DateTimeFormat('pt-BR', {
+      timeZone: 'America/Sao_Paulo',
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    });
+    return formatador.format(new Date(data));
+  }
 
-  // Ordena o histórico: não concluídas primeiro, depois concluídas por data decrescente
   historicoOrdenado(): Registro[] {
     if (!this.card?.historico) return [];
 
@@ -187,5 +172,4 @@ formatarDataSomenteData(data: Date): string {
 
     return [...naoConcluidas, ...concluidas];
   }
-
 }

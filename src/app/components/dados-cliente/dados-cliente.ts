@@ -11,16 +11,26 @@ import { Card } from '../../shared/models/card.model';
   styleUrls: ['./dados-cliente.css'],
 })
 export class DadosClienteComponent {
+  // Dados do cliente para edição
   @Input() card!: Card;
+
+  // Evento para avisar alterações no cliente
   @Output() atualizar = new EventEmitter<Card>();
 
+  // Controle do modo edição
   editando = false;
 
-  habilitarEdicao() {
+  /**
+   * Habilita o modo edição dos campos
+   */
+  habilitarEdicao(): void {
     this.editando = true;
   }
 
-  salvarAlteracoes() {
+  /**
+   * Salva as alterações e desabilita edição
+   */
+  salvarAlteracoes(): void {
     this.editando = false;
     this.atualizar.emit(this.card);
   }
