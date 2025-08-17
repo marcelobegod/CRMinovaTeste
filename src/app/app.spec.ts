@@ -1,6 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app';
 
+// Removed stray estaLogado function as it is not used in this test file.
+
 describe('App', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
