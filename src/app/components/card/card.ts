@@ -10,66 +10,37 @@ import { Card } from '../../shared/models/card.model';
   styleUrls: ['./card.css'],
 })
 export class CardComponent {
-  // Recebe o objeto card com os dados
   @Input() card!: Card;
 
-  // Eventos para interações externas
   @Output() cardClicked = new EventEmitter<Card>();
   @Output() excluirCard = new EventEmitter<Card>();
 
-  /**
-   * Calcula a cor do fundo baseado na data da última atividade do histórico.
-   * - verde: atividade para hoje
-   * - vermelho: atividade passada
-   * - cinza: sem histórico ou futura
-   */
+  // Determina cor do card baseado no histórico
   get statusCor(): 'verde' | 'vermelho' | 'cinza' | 'amarelo' {
-  if (!this.card?.historico || this.card.historico.length === 0) {
-    // Sem nenhuma atividade cadastrada → amarelo (alerta)
-    return 'amarelo';
-  }
+    if (!this.card?.historico?.length) return 'amarelo';
 
-  // Filtra atividades que NÃO estão concluídas (pendentes)
-  const atividadesPendentes = this.card.historico.filter(registro => !registro.concluida);
+    const pendentes = this.card.historico.filter(r => !r.concluida);
+    if (!pendentes.length) return 'amarelo';
 
-  if (atividadesPendentes.length === 0) {
-    // Todas concluídas → amarelo (alerta para criar nova)
-    return 'amarelo';
-  }
+    const ultima = pendentes[pendentes.length - 1];
+    const dataAtividade = new Date(ultima.data);
+    if (isNaN(dataAtividade.getTime())) return 'cinza';
 
-  // Tem atividades pendentes, usa lógica da data da última atividade pendente
-  const ultimaAtividade = atividadesPendentes[atividadesPendentes.length - 1];
-  const dataAtividade = new Date(ultimaAtividade.data);
+    const hoje = new Date();
+    hoje.setHours(0, 0, 0, 0);
+    dataAtividade.setHours(0, 0, 0, 0);
 
-  if (isNaN(dataAtividade.getTime())) {
-    console.warn('Data inválida na última atividade do card:', ultimaAtividade.data);
+    if (dataAtividade.getTime() === hoje.getTime()) return 'verde';
+    if (dataAtividade.getTime() < hoje.getTime()) return 'vermelho';
     return 'cinza';
   }
 
-  const hoje = new Date();
-  hoje.setHours(0, 0, 0, 0);
-  dataAtividade.setHours(0, 0, 0, 0);
-
-  if (dataAtividade.getTime() === hoje.getTime()) {
-    return 'verde';
-  } else if (dataAtividade.getTime() < hoje.getTime()) {
-    return 'vermelho';
-  } else {
-    return 'cinza';
-  }
-}
-
-  /**
-   * Emite evento de clique no card.
-   */
+  // Clique no card
   onClick(): void {
     this.cardClicked.emit(this.card);
   }
 
-  /**
-   * Emite evento de exclusão do card.
-   * @param event MouseEvent para evitar propagação do clique.
-   */
+  // Clique no botão excluir
   onExcluir(event: MouseEvent): void {
     event.stopPropagation();
     this.excluirCard.emit(this.card);

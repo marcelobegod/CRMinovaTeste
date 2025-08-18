@@ -1,54 +1,51 @@
-<!-- Linha fixa abaixo da navbar -->
-<app-linha-sticky [abrirModalCallback]="abrirModalCallback"></app-linha-sticky>
+<!-- Linha fixa -->
+<app-linha-sticky
+  [abrirModalCallback]="abrirModalCallback"
+  [isMobile]="isMobile"
+  [colunaVisivel]="colunaVisivel"
+  [colunasLength]="colunas.length"
+  [avancarColuna]="avancarColuna.bind(this)"
+  [voltarColuna]="voltarColuna.bind(this)"
+  [criarColunaCallback]="criarColuna.bind(this)"
+></app-linha-sticky>
 
-<!-- Botões flutuantes para mobile -->
-@if (isMobile) {
-  <button
-    class="btn btn-light position-fixed top-50 start-0 translate-middle-y z-3 btn-coluna"
-    style="border-radius: 0 50% 50% 0; height: 40px; width: 40px;"
-    (click)="voltarColuna()"
-  >
-    &lt;
-  </button>
+<!-- Botões mobile -->
+<div *ngIf="isMobile">
+  <button class="btn btn-light position-fixed top-50 start-0 translate-middle-y z-3 btn-coluna"
+    style="border-radius: 0 50% 50% 0; height:40px;width:40px;"
+    (click)="voltarColuna()">&lt;</button>
 
-  <button
-    class="btn btn-light position-fixed top-50 end-0 translate-middle-y z-3 btn-coluna"
-    style="border-radius: 50% 0 0 50%; height: 40px; width: 40px;"
-    (click)="avancarColuna()"
-  >
-    &gt;
-  </button>
-}
-
-<!-- Conteúdo principal com scroll horizontal se necessário -->
-<div class="conteudo-scroll">
-    @for (coluna of colunas; track coluna['id']; let i = $index) {
-    <div
-      class="coluna-wrapper"
-      [class.d-none]="isMobile && i !== colunaVisivel"
-      [style.flex]="!isMobile ? '1 1 0' : 'none'"
-      [style.width]="!isMobile ? 'auto' : '100vw'"
-    >
-    <app-column
-    [title]="coluna.titulo"
-    [cards]="coluna.cards"
-    [index]="i"
-    [connectedTo]="connectedColumnIds"
-    (cardMoved)="onCardMovido($event)"
-    (cardClicked)="abrirHistorico($event)"
-    (editarCard)="abrirEdicao($event)"
-    (excluirCard)="confirmarExclusao($event)"
-    ></app-column>
-
-    </div>
-  }
+  <button class="btn btn-light position-fixed top-50 end-0 translate-middle-y z-3 btn-coluna"
+    style="border-radius: 50% 0 0 50%; height:40px;width:40px;"
+    (click)="avancarColuna()">&gt;</button>
 </div>
 
-<!-- Modal para exibir e editar histórico -->
+<!-- Conteúdo scroll horizontal -->
+<div class="conteudo-scroll">
+  <div *ngFor="let coluna of colunas; let i = index"
+       class="coluna-wrapper"
+       [class.d-none]="isMobile && i !== colunaVisivel"
+       [style.flex]="!isMobile ? '1 1 0' : 'none'"
+       [style.width]="!isMobile ? 'auto' : '100vw'">
+
+    <app-column
+      [title]="coluna.titulo"
+      [cards]="coluna.cards"
+      [index]="i"
+      [connectedTo]="connectedColumnIds"
+      (cardMoved)="onCardMovido($event)"
+      (cardClicked)="abrirHistorico($event)"
+      (editarCard)="abrirEdicao($event)"
+      (excluirCard)="confirmarExclusao($event)">
+    </app-column>
+
+  </div>
+</div>
+
+<!-- Modal histórico -->
 <app-historico-modal
   [visible]="historicoModalAberto"
   [card]="cardSelecionado"
   (fechar)="fecharHistorico()"
-  (atualizar)="salvarHistorico($event)"
-></app-historico-modal>
-
+  (atualizar)="salvarHistorico($event)">
+</app-historico-modal>

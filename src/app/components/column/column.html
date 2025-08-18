@@ -1,23 +1,20 @@
 <div class="columns">
   <h6>{{ title }}</h6>
 
-  <div
-    class="dropzone"
-    cdkDropList
-    [cdkDropListData]="cards"
-    [cdkDropListConnectedTo]="connectedTo"
-    [id]="index.toString()"
-    (cdkDropListDropped)="drop($event)"
-  >
+  <div cdkDropList
+       [cdkDropListData]="cards"
+       [cdkDropListConnectedTo]="connectedTo"
+       [id]="index.toString()"
+       class="dropzone"
+       (cdkDropListDropped)="drop($event)">
+
     <div *ngFor="let card of cards; trackBy: trackById" cdkDrag>
-      <div (click)="onCardClick(card)">
-        <app-card
-          [card]="card"
-          (cardClicked)="onCardClick(card)"
-          (editarCard)="onEditarCard(card)"
-          (excluirCard)="onExcluirCard(card)"
-        ></app-card>
-      </div>
+      <app-card
+        [card]="card"
+        (cardClicked)="onCardClick(card)"
+        (editarCard)="onEditarCard(card)"
+        (excluirCard)="onExcluirCard(card)">
+      </app-card>
     </div>
   </div>
 </div>

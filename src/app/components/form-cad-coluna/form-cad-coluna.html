@@ -1,0 +1,30 @@
+<div
+  class="modal fade"
+  [class.show]="visible"
+  [style.display]="visible ? 'block' : 'none'"
+  style="background-color: rgba(0,0,0,0.5);"
+  tabindex="-1"
+  role="dialog"
+>
+  <div class="modal-dialog">
+    <div class="modal-content p-3">
+      <div class="modal-header">
+        <h5 class="modal-title">Nova Coluna</h5>
+        <button type="button" class="btn-close" (click)="fechar()"></button>
+      </div>
+      <div class="modal-body">
+        <label for="tituloInput" class="form-label">Título da coluna:</label>
+        <input
+          id="tituloInput"
+          type="text"
+          class="form-control"
+          [(ngModel)]="titulo"
+        />
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="fechar()">Cancelar</button>
+        <button type="button" class="btn btn-primary" (click)="salvar()">Salvar</button>
+      </div>
+    </div>
+  </div>
+</div>
