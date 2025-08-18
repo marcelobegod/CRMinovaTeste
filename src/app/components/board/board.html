@@ -28,16 +28,20 @@
        [style.flex]="!isMobile ? '1 1 0' : 'none'"
        [style.width]="!isMobile ? 'auto' : '100vw'">
 
-    <app-column
-      [title]="coluna.titulo"
-      [cards]="coluna.cards"
-      [index]="i"
-      [connectedTo]="connectedColumnIds"
-      (cardMoved)="onCardMovido($event)"
-      (cardClicked)="abrirHistorico($event)"
-      (editarCard)="abrirEdicao($event)"
-      (excluirCard)="confirmarExclusao($event)">
-    </app-column>
+  <app-column
+  [title]="coluna.titulo"
+  [cards]="coluna.cards"
+  [index]="i"
+  [connectedTo]="connectedColumnIds"
+  (cardMoved)="onCardMovido($event)"
+  (cardClicked)="abrirHistorico($event)"
+  (editarCard)="abrirEdicao($event)"
+  (excluirCard)="confirmarExclusao($event)"
+  (excluirColunaEvent)="removerColuna($event)"
+  (tituloEditado)="atualizarTituloColuna($event)">
+</app-column>
+
+
 
   </div>
 </div>

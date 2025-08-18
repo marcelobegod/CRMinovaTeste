@@ -1,5 +1,37 @@
 <div class="columns">
-  <h6>{{ title }}</h6>
+  <div class="d-flex justify-content-center align-items-center position-relative mb-2">
+    <!-- Título normal -->
+    <h6 *ngIf="!editandoTitulo" class="mb-0">{{ title }}</h6>
+
+    <!-- Campo de edição -->
+    <div *ngIf="editandoTitulo" class="d-flex align-items-center w-100">
+      <input type="text"
+             class="form-control form-control-sm me-2"
+             [(ngModel)]="novoTitulo"
+             (keyup.enter)="confirmarEdicaoTitulo()" />
+      <button class="btn btn-sm btn-success me-1" (click)="confirmarEdicaoTitulo()">
+        <i class="bi bi-check-lg"></i>
+      </button>
+      <button class="btn btn-sm btn-secondary" (click)="cancelarEdicaoTitulo()">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+
+    <!-- Ícone de engrenagem -->
+    <div class="dropdown ms-2" *ngIf="!editandoTitulo">
+      <button class="btn btn-sm btn-light" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="bi bi-gear"></i>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-end">
+        <li>
+          <button class="dropdown-item" (click)="editarTitulo()">Editar</button>
+        </li>
+        <li>
+          <button class="dropdown-item text-danger" (click)="excluirColuna()">Excluir</button>
+        </li>
+      </ul>
+    </div>
+  </div>
 
   <div cdkDropList
        [cdkDropListData]="cards"

@@ -141,4 +141,13 @@ export class BoardComponent implements OnInit {
   this.colunas.push({ titulo, cards: [] });
   this.connectedColumnIds = this.colunas.map((_, idx) => idx.toString());
 }
+
+removerColuna(index: number): void {
+  this.colunas.splice(index, 1);
+  this.connectedColumnIds = this.colunas.map((_, idx) => idx.toString());
+}
+
+atualizarTituloColuna(event: { index: number; titulo: string }): void {
+  this.colunas[event.index].titulo = event.titulo;
+}
 }
