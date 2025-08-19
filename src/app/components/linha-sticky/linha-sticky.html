@@ -4,21 +4,6 @@
     <button class="btn ms-2" (click)="abrirModalNovaColuna()">Adicionar Coluna</button>
   </div>
 
-  <div class="acoes-right">
-    <button
-      *ngIf="isMobile && colunaVisivel > 0"
-      class="btn btn-light"
-      (click)="voltarColuna!()"
-    >&lt;</button>
-
-    <button
-      *ngIf="isMobile && colunaVisivel < colunasLength - 1"
-      class="btn btn-light ms-1"
-      (click)="avancarColuna!()"
-    >&gt;</button>
-  </div>
-</div>
-
 <!-- Modal de nova coluna -->
 <app-form-cad-coluna
   [visible]="modalNovaColunaVisible"
