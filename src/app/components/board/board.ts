@@ -1,3 +1,4 @@
+import { Coluna } from './../../shared/models/coluna.model';
 import { Component, HostListener, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ColumnComponent } from '../column/column';
@@ -6,10 +7,6 @@ import { HistoricoModalComponent } from '../historico-modal/historico-modal';
 import { Card } from '../../shared/models/card.model';
 import { transferArrayItem } from '@angular/cdk/drag-drop';
 
-interface Coluna {
-  titulo: string;
-  cards: Card[];
-}
 
 @Component({
   selector: 'app-board',

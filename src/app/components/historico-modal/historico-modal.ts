@@ -3,26 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HistoricoFormComponent } from '../historico-form/historico-form';
 import { DadosClienteComponent } from '../dados-cliente/dados-cliente';
-
-// Interface para registros de atividades do cliente
-interface Registro {
-  id: string;
-  atividade: string;
-  descricao: string;
-  data: Date;
-  concluida?: boolean;
-}
-
-// Interface para o card/cliente
-interface Card {
-  id: string;
-  negocio: string;
-  nome: string;
-  servicoDesejado: string;
-  valorNegocio: string;
-  criadoPor: string;
-  historico?: Registro[];
-}
+import { Registro } from '../../shared/models/registro.model';
+import { Card } from '../../shared/models/card.model';
 
 @Component({
   selector: 'app-historico-modal',
@@ -40,7 +22,6 @@ export class HistoricoModalComponent {
   novaAtividade = '';
   novaDescricao = '';
   dataInputISO = '';
-
   registroEditando: Registro | null = null;
 
   // --- Função para interpretar data ISO como local (sem aplicar fuso horário UTC) ---

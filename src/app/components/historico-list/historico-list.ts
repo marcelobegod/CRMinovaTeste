@@ -1,14 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-// Interface Registro — defina também externamente se preferir.
-export interface Registro {
-  id: string;
-  atividade: string;
-  descricao: string;
-  data: Date;
-  concluida?: boolean;
-}
+import { Registro } from '../../shared/models/registro.model';
 
 @Component({
   selector: 'app-historico-list',
@@ -19,7 +11,6 @@ export interface Registro {
 })
 export class HistoricoListComponent {
   @Input() historico: Registro[] = [];
-
   @Output() editar = new EventEmitter<Registro>();
   @Output() concluir = new EventEmitter<Registro>();
 
