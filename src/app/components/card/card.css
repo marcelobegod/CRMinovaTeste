@@ -16,216 +16,103 @@
 }
 
 .card-container:hover {
-  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transform: translateY(-2px);
 }
-
 .card-container:focus {
-  box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25); /* foco acessível */
+  box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.4);
 }
 
-/* -------------------------------
-   Tipografia interna do card
----------------------------------- */
+/* -- Tipografia com hierarquia clara e legível -- */
 .titulo {
-  font-size: 1rem;
+  font-size: 1.0rem;
   font-weight: 600;
-  margin-bottom: 4px;
+  margin-bottom: .25rem;
 }
-
 .linha {
-  font-size: 0.95rem;
-  margin-bottom: 2px;
+  font-size: .95rem;
+  margin-bottom: .125rem;
 }
-
 .valor {
   font-weight: 500;
-  color: #198754; /* verde Bootstrap */
+  color: #198754;
 }
-
 .pequeno {
-  font-size: 0.85rem;
+  font-size: .85rem;
   color: #6c757d;
-  margin-top: 6px;
+  margin-top: .5rem;
 }
 
-/* -------------------------------
-   Estrutura do título e ações
----------------------------------- */
+/* -- Ações no cabeçalho do card -- */
 .titulo-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-
 .acoes {
   display: flex;
-  gap: 0.25rem;
+  gap: .25rem;
 }
-
-/* -------------------------------
-   Botões ícones (editar, excluir etc.)
----------------------------------- */
 .btn-icone {
-  background: transparent;
+  background: none;
   border: none;
-  color: #6c757d; /* cinza médio padrão */
-  font-size: 1.2rem;
-  padding: 2px;
+  color: #6c757d;
+  font-size: 1.25rem;
+  padding: .125rem;
   cursor: pointer;
-  transition: color 0.3s ease;
+  transition: color .3s ease-in-out;
 }
-
-/* Hover geral para ícones */
 .btn-icone:hover {
-  color: #0d6efd; /* azul bootstrap padrão */
+  color: #0d6efd;
+}
+.btn-icone.excluir:hover {
+  color: #dc3545;
+}
+.btn-icone.trocar:hover {
+  color: #ffc107;
 }
 
-/* Estilo especial para botão de excluir (lixeira) */
-.card-container.fundo-amarelo .btn-icone.excluir {
-  color: #856404; /* amarelo escuro para contraste no fundo amarelo */
-  font-weight: 700;
-}
-
-.card-container.fundo-amarelo .btn-icone.excluir:hover {
-  color: #b36b00; /* tom mais escuro no hover para feedback visual */
-}
-
-/* Para os demais fundos, manter vermelho no hover da lixeira */
-.btn-icone.excluir:hover:not(.fundo-amarelo .btn-icone.excluir) {
-  color: #dc3545; /* vermelho vibrante para ação de exclusão */
-}
-
-/* -------------------------------
-   Cores específicas dos cards (só fundo, cor, borda e sombra)
----------------------------------- */
-
-/* Fundo verde suave para atividade do dia */
+/* -- Estilos de fundo e cores por status com contraste acessível -- */
 .fundo-verde {
-  background-color: #d4edda;
-  color: #155724; /* Verde escuro para contraste */
-  border: 1px solid #c3e6cb;
-  box-shadow: 0 2px 6px rgba(21, 87, 36, 0.15);
-  transition: background-color 0.3s ease;
+  background-color: #eaf6ea;
+  border-color: #c3e6cb;
 }
-
-/* Fundo vermelho suave para atividade atrasada */
 .fundo-vermelho {
-  background-color: #f8d7da;
-  color: #721c24; /* Vermelho escuro para contraste */
-  border: 1px solid #f5c6cb;
-  box-shadow: 0 2px 6px rgba(114, 28, 36, 0.15);
-  transition: background-color 0.3s ease;
+  background-color: #fbeaea;
+  border-color: #f5c6cb;
 }
-
-/* Fundo cinza claro para atividade futura ou sem atividade */
 .fundo-cinza {
-  background-color: #e2e3e5;
-  color: #6c757d; /* Cinza médio para texto */
-  border: 1px solid #d6d8db;
-  box-shadow: 0 2px 6px rgba(108, 117, 125, 0.10);
-  transition: background-color 0.3s ease;
+  background-color: #f5f5f5;
+  border-color: #d6d8db;
 }
-
-/* Fundo amarelo claro para cards sem atividade agendada ou após concluir atividade */
 .fundo-amarelo {
-  background-color: #fff3cd;
-  color: #856404; /* texto amarelo escuro para contraste */
-  border: 1px solid #ffeeba;
-  box-shadow: 0 2px 6px rgba(133, 100, 4, 0.15);
-  transition: background-color 0.3s ease;
+  background-color: #fffbea;
+  border-color: #ffeeba;
 }
 
-/* -------------------------------
-   Botões principais (primário, sucesso, secundário)
----------------------------------- */
-.btn-primary {
-  background-color: #0d6efd;
-  border-color: #0d6efd;
-  color: white;
-  transition: background-color 0.3s ease;
+.fundo-verde .titulo,
+.fundo-vermelho .titulo,
+.fundo-cinza .titulo,
+.fundo-amarelo .titulo,
+.fundo-verde .linha,
+.fundo-vermelho .linha,
+.fundo-cinza .linha,
+.fundo-amarelo .linha,
+.fundo-verde .valor,
+.fundo-vermelho .valor,
+.fundo-cinza .valor,
+.fundo-amarelo .valor {
+  color: #212529; /* Preto suave para consistência e contraste */
 }
 
-.btn-primary:hover {
-  background-color: #0b5ed7;
-  border-color: #0a58ca;
-  cursor: pointer;
-}
-
-.btn-success {
-  background-color: #198754;
-  border-color: #198754;
-  color: white;
-  transition: background-color 0.3s ease;
-}
-
-.btn-success:hover {
-  background-color: #157347;
-  border-color: #146c43;
-  cursor: pointer;
-}
-
-.btn-secondary {
-  background-color: #6c757d;
-  border-color: #6c757d;
-  color: white;
-  transition: background-color 0.3s ease;
-}
-
-.btn-secondary:hover {
-  background-color: #5c636a;
-  border-color: #565e64;
-  cursor: pointer;
-}
-
-/* -------------------------------
-   Cores de fundo dos cards por status
----------------------------------- */
-.fundo-verde {
-  background-color: #d4edda; /* verde claro Bootstrap */
-  color: #155724;            /* texto verde escuro */
-}
-
-.fundo-vermelho {
-  background-color: #f8d7da; /* vermelho claro Bootstrap */
-  color: #721c24;            /* texto vermelho escuro */
-}
-
-.fundo-cinza {
-  background-color: #e2e3e5; /* cinza claro Bootstrap */
-  color: #6c757d;            /* texto cinza escuro */
-}
-
-.fundo-amarelo {
-  background-color: #fff3cd; /* amarelo claro Bootstrap */
-  color: #856404;            /* texto amarelo escuro */
-}
-
-/* -------------------------------
-   Cores dos ícones por status
----------------------------------- */
-.icone-verde {
-  color: #155724; /* verde escuro */
-}
-
-.icone-vermelho {
-  color: #721c24; /* vermelho escuro */
-}
-
-.icone-cinza {
-  color: #6c757d; /* cinza escuro */
-}
-
-.icone-amarelo {
-  color: #856404; /* amarelo escuro */
-}
-
-/* -------------------------------
-   Efeito hover para ícones
----------------------------------- */
+/* -- Ícones de status, destacando ações -- */
+.icone-verde { color: #155724; }
+.icone-vermelho { color: #721c24; }
+.icone-cinza { color: #495057; }
+.icone-amarelo { color: #856404; }
 i[class^="icone-"]:hover {
-  filter: brightness(0.85);
-  cursor: pointer;
-  transition: filter 0.3s ease;
+  filter: brightness(0.9);
+  transition: filter .3s ease-in-out;
 }
+
 
