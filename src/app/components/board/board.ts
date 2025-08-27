@@ -33,6 +33,8 @@ export class BoardComponent implements OnInit {
   connectedColumnIds: string[] = [];
   abrirModalCallback!: () => void;
 
+  modalVisivel = false;
+
   touchStartX = 0;
   touchEndX = 0;
 
@@ -102,15 +104,21 @@ export class BoardComponent implements OnInit {
 
   /** Abre modal de histórico */
   abrirHistorico(card: Card): void {
-    this.cardSelecionado = card;
+  // força reset antes de reatribuir
+  this.cardSelecionado = null;
+  this.historicoModalAberto = false;
+
+  setTimeout(() => {
+    this.cardSelecionado = { ...card }; // cria nova ref (garante mudança)
     this.historicoModalAberto = true;
-  }
+  });
+}
 
   /** Fecha modal de histórico */
   fecharHistorico(): void {
-    this.historicoModalAberto = false;
-    this.cardSelecionado = null;
-  }
+  this.historicoModalAberto = false;
+  this.cardSelecionado = null;
+}
 
   /** Salva alterações do histórico */
   salvarHistorico(cardAtualizado: Card): void {
