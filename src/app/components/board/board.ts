@@ -1,4 +1,3 @@
-import { Coluna } from './../../shared/models/coluna.model';
 import { Component, HostListener, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ColumnComponent } from '../column/column';
@@ -7,6 +6,10 @@ import { HistoricoModalComponent } from '../historico-modal/historico-modal';
 import { Card } from '../../shared/models/card.model';
 import { transferArrayItem } from '@angular/cdk/drag-drop';
 
+interface Coluna {
+  titulo: string;
+  cards: Card[];
+}
 
 @Component({
   selector: 'app-board',
@@ -32,8 +35,6 @@ export class BoardComponent implements OnInit {
 
   connectedColumnIds: string[] = [];
   abrirModalCallback!: () => void;
-
-  modalVisivel = false;
 
   touchStartX = 0;
   touchEndX = 0;
@@ -104,21 +105,15 @@ export class BoardComponent implements OnInit {
 
   /** Abre modal de histórico */
   abrirHistorico(card: Card): void {
-  // força reset antes de reatribuir
-  this.cardSelecionado = null;
-  this.historicoModalAberto = false;
-
-  setTimeout(() => {
-    this.cardSelecionado = { ...card }; // cria nova ref (garante mudança)
+    this.cardSelecionado = card;
     this.historicoModalAberto = true;
-  });
-}
+  }
 
   /** Fecha modal de histórico */
   fecharHistorico(): void {
-  this.historicoModalAberto = false;
-  this.cardSelecionado = null;
-}
+    this.historicoModalAberto = false;
+    this.cardSelecionado = null;
+  }
 
   /** Salva alterações do histórico */
   salvarHistorico(cardAtualizado: Card): void {

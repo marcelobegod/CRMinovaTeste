@@ -1,5 +1,5 @@
 export interface Registro {
-  id: string;
+  id: number;
   atividade: string;
   descricao: string;
   data: Date;

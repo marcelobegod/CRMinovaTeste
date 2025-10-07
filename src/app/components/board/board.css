@@ -5,6 +5,8 @@
   overflow-x: auto;
   overflow-y: hidden; /* opcional, evita scroll vertical desnecessário */
   height: calc(100vh - 150px);
+  padding: 0rem;
+  gap: .1rem;
   background-color: #f8f9fa;
   flex-wrap: nowrap; /* 👈 ADICIONE ESTA LINHA */
 }

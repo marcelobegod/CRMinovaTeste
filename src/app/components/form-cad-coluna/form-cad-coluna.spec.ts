@@ -1,17 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormCadColunaComponent } from './form-cad-coluna';
 
-describe('FormCadColunaComponent', () => {
-  let component: FormCadColunaComponent;
-  let fixture: ComponentFixture<FormCadColunaComponent>;
+import { FormCadColuna } from './form-cad-coluna';
+
+describe('FormCadColuna', () => {
+  let component: FormCadColuna;
+  let fixture: ComponentFixture<FormCadColuna>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [FormCadColunaComponent]
+      imports: [FormCadColuna]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(FormCadColunaComponent);
+    fixture = TestBed.createComponent(FormCadColuna);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

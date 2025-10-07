@@ -1,6 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormCadColunaComponent } from '../form-cad-coluna/form-cad-coluna';
+
+
 @Component({
   selector: 'app-linha-sticky',
   standalone: true,

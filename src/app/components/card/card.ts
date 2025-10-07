@@ -36,9 +36,9 @@ export class CardComponent {
   }
 
   // Clique no card
-onClick(): void {
-  this.cardClicked.emit({ ...this.card }); // cria cópia nova
-}
+  onClick(): void {
+    this.cardClicked.emit(this.card);
+  }
 
   // Clique no botão excluir
   onExcluir(event: MouseEvent): void {

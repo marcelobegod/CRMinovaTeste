@@ -1,7 +1,7 @@
 <div class="columns">
-  <div class="d-flex justify-content-center align-items-center position-relative">
+  <div class="d-flex justify-content-center align-items-center position-relative mb-2">
     <!-- Título normal -->
-    <h6 *ngIf="!editandoTitulo">{{ title }}</h6>
+    <h6 *ngIf="!editandoTitulo" class="mb-0">{{ title }}</h6>
 
     <!-- Campo de edição -->
     <div *ngIf="editandoTitulo" class="d-flex align-items-center w-100">

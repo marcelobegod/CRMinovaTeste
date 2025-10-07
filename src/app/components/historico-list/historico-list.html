@@ -1,22 +1,9 @@
-<ul class="list-group registros-lista">
-  <li *ngFor="let item of historicoOrdenado()" class="list-group-item">
-    <div class="d-flex justify-content-between align-items-center">
-      <div>
-        <strong>{{ item.atividade }}</strong> - {{ formatarData(item.data) }}
-        <p class="mb-0">{{ item.descricao }}</p>
-        <span *ngIf="item.concluida" class="badge bg-success mt-1">
-          ✔ Atividade concluída
-        </span>
-      </div>
-
-      <div *ngIf="!item.concluida" class="btn-group">
-        <button class="btn btn-sm btn-outline-primary" (click)="editar.emit(item)">
-          ✏ Editar
-        </button>
-        <button class="btn btn-sm btn-success" (click)="concluir.emit(item)">
-          ✔ Concluir
-        </button>
-      </div>
-    </div>
+<ul>
+  <li *ngFor="let item of historicoOrdenado()">
+    <strong>{{ item.atividade }}</strong> - {{ formatarData(item.data) }}
+    <p>{{ item.descricao }}</p>
+    <button (click)="editar.emit(item)" [disabled]="item.concluida">Editar</button>
+    <button (click)="concluir.emit(item)" [disabled]="item.concluida">Concluir</button>
+    <span *ngIf="item.concluida" style="color: green;">✔ Atividade concluída</span>
   </li>
 </ul>

@@ -16,103 +16,125 @@
 }
 
 .card-container:hover {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.15);
   transform: translateY(-2px);
 }
+
 .card-container:focus {
-  box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.4);
+  box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25); /* foco acessível */
 }
 
-/* -- Tipografia com hierarquia clara e legível -- */
-.titulo {
-  font-size: 1.0rem;
-  font-weight: 600;
-  margin-bottom: .25rem;
-}
-.linha {
-  font-size: .95rem;
-  margin-bottom: .125rem;
-}
-.valor {
-  font-weight: 500;
-  color: #198754;
-}
-.pequeno {
-  font-size: .85rem;
-  color: #6c757d;
-  margin-top: .5rem;
-}
-
-/* -- Ações no cabeçalho do card -- */
+/* -------------------------------
+   Estrutura do título e ações
+---------------------------------- */
 .titulo-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-.acoes {
-  display: flex;
-  gap: .25rem;
-}
+
+/* -------------------------------
+   Botões ícones (editar, excluir etc.)
+---------------------------------- */
 .btn-icone {
-  background: none;
+  background: transparent;
   border: none;
-  color: #6c757d;
-  font-size: 1.25rem;
-  padding: .125rem;
+  color: #000000; /* cinza médio padrão */
+  font-size: 1.2rem;
+  padding: 2px;
   cursor: pointer;
-  transition: color .3s ease-in-out;
+  transition: color 0.3s ease;
 }
+
+/* Hover geral para ícones */
 .btn-icone:hover {
-  color: #0d6efd;
-}
-.btn-icone.excluir:hover {
-  color: #dc3545;
-}
-.btn-icone.trocar:hover {
-  color: #ffc107;
+  color: #ff0000; /* azul bootstrap padrão */
 }
 
-/* -- Estilos de fundo e cores por status com contraste acessível -- */
+/* -------------------------------
+   Cores específicas dos cards (só fundo, cor, borda e sombra)
+---------------------------------- */
+
+/* Fundo verde suave para atividade do dia */
 .fundo-verde {
-  background-color: #eaf6ea;
-  border-color: #c3e6cb;
+  background-color: #d4edda;
+  border: 1px solid #c3e6cb;
+  box-shadow: 0 2px 6px rgba(21, 87, 36, 0.15);
+  transition: background-color 0.3s ease;
 }
+
+/* Fundo vermelho suave para atividade atrasada */
 .fundo-vermelho {
-  background-color: #fbeaea;
-  border-color: #f5c6cb;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  box-shadow: 0 2px 6px rgba(114, 28, 36, 0.15);
+  transition: background-color 0.3s ease;
 }
+
+/* Fundo cinza claro para atividade futura ou sem atividade */
 .fundo-cinza {
-  background-color: #f5f5f5;
-  border-color: #d6d8db;
+  background-color: #e2e3e5;
+  border: 1px solid #d6d8db;
+  box-shadow: 0 2px 6px rgba(108, 117, 125, 0.10);
+  transition: background-color 0.3s ease;
 }
+
+/* Fundo amarelo claro para cards sem atividade agendada ou após concluir atividade */
 .fundo-amarelo {
-  background-color: #fffbea;
-  border-color: #ffeeba;
+  background-color: #fff3cd;
+  border: 1px solid #ffeeba;
+  box-shadow: 0 2px 6px rgba(133, 100, 4, 0.15);
+  transition: background-color 0.3s ease;
 }
 
-.fundo-verde .titulo,
-.fundo-vermelho .titulo,
-.fundo-cinza .titulo,
-.fundo-amarelo .titulo,
-.fundo-verde .linha,
-.fundo-vermelho .linha,
-.fundo-cinza .linha,
-.fundo-amarelo .linha,
-.fundo-verde .valor,
-.fundo-vermelho .valor,
-.fundo-cinza .valor,
-.fundo-amarelo .valor {
-  color: #212529; /* Preto suave para consistência e contraste */
+/* -------------------------------
+   Botões principais (primário, sucesso, secundário)
+---------------------------------- */
+.btn-primary {
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+  color: white;
+  transition: background-color 0.3s ease;
 }
 
-/* -- Ícones de status, destacando ações -- */
-.icone-verde { color: #155724; }
-.icone-vermelho { color: #721c24; }
-.icone-cinza { color: #495057; }
-.icone-amarelo { color: #856404; }
+.btn-primary:hover {
+  background-color: #0b5ed7;
+  border-color: #0a58ca;
+  cursor: pointer;
+}
+
+.btn-success {
+  background-color: #198754;
+  border-color: #198754;
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+.btn-success:hover {
+  background-color: #157347;
+  border-color: #146c43;
+  cursor: pointer;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  border-color: #6c757d;
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background-color: #5c636a;
+  border-color: #565e64;
+  cursor: pointer;
+}
+
+/* -------------------------------
+   Efeito hover para ícones
+---------------------------------- */
 i[class^="icone-"]:hover {
-  filter: brightness(0.9);
-  transition: filter .3s ease-in-out;
+  filter: brightness(0.85);
+  cursor: pointer;
+  transition: filter 0.3s ease;
 }
-
 

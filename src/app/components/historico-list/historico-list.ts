@@ -1,7 +1,14 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Registro } from '../../shared/models/registro.model';
-import { HistoricoService } from '../../shared/services/historico.service';
+
+// Interface Registro — defina também externamente se preferir.
+export interface Registro {
+  id: string;
+  atividade: string;
+  descricao: string;
+  data: Date;
+  concluida?: boolean;
+}
 
 @Component({
   selector: 'app-historico-list',
@@ -9,7 +16,6 @@ import { HistoricoService } from '../../shared/services/historico.service';
   imports: [CommonModule],
   templateUrl: './historico-list.html',
   styleUrls: ['./historico-list.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HistoricoListComponent {
   @Input() historico: Registro[] = [];
@@ -17,13 +23,7 @@ export class HistoricoListComponent {
   @Output() editar = new EventEmitter<Registro>();
   @Output() concluir = new EventEmitter<Registro>();
 
-  constructor(private historicoService: HistoricoService) {}
-
-  // Retorna histórico já ordenado via service
-  historicoOrdenado(): Registro[] {
-    return this.historicoService.ordenar(this.historico || []);
-  }
-
+  // Formata data para dd/MM/yyyy
   formatarData(data: Date): string {
     if (!data) return '';
     const d = new Date(data);
@@ -31,5 +31,14 @@ export class HistoricoListComponent {
     const mes = ('0' + (d.getMonth() + 1)).slice(-2);
     const ano = d.getFullYear();
     return `${dia}/${mes}/${ano}`;
+  }
+
+  // Ordena o histórico do mais recente para o mais antigo
+  historicoOrdenado(): Registro[] {
+    return this.historico
+      ? [...this.historico].sort(
+          (a, b) => new Date(b.data).getTime() - new Date(a.data).getTime()
+        )
+      : [];
   }
 }

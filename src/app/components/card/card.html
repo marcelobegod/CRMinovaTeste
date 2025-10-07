@@ -8,16 +8,10 @@
      (click)="onClick()" tabindex="0">
 
   <div class="titulo-container">
-    <strong class="titulo">{{ card.negocio }}</strong>
+    <strong>{{ card.negocio }}</strong>
     <div class="acoes">
       <button class="btn-icone" (click)="onExcluir($event)">
-        <i class="bi bi-trash"
-           [ngClass]="{
-             'icone-verde': statusCor === 'verde',
-             'icone-vermelho': statusCor === 'vermelho',
-             'icone-cinza': statusCor === 'cinza',
-             'icone-amarelo': statusCor === 'amarelo'
-           }">
+        <i class="bi bi-trash">
         </i>
       </button>
     </div>
@@ -25,8 +19,6 @@
 
   <div class="linha">{{ card.nome }}</div>
   <div class="linha">{{ card.servicoDesejado }}</div>
-  <div class="linha valor">{{ card.valorNegocio }}</div>
-  <div class="linha pequeno">
-    <strong>Usuário:</strong> {{ card.criadoPor }}
-  </div>
+  <div class="linha">{{ card.valorNegocio }}</div>
+  <div class="linha">Usuário: {{ card.criadoPor }}</div>
 </div>
