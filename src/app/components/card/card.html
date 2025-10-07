@@ -1,18 +1,23 @@
 <div class="card-container"
      [ngClass]="{
-       'fundo-verde': statusCor === 'verde',
        'fundo-vermelho': statusCor === 'vermelho',
-       'fundo-cinza': statusCor === 'cinza',
-       'fundo-amarelo': statusCor === 'amarelo'
+       'fundo-amarelo': statusCor === 'amarelo',
+       'fundo-azul': statusCor === 'azul',
+       'fundo-cinza': statusCor === 'cinza'
      }"
      (click)="onClick()" tabindex="0">
 
   <div class="titulo-container">
     <strong>{{ card.negocio }}</strong>
-    <div class="acoes">
-      <button class="btn-icone" (click)="onExcluir($event)">
-        <i class="bi bi-trash">
-        </i>
+    <div>
+      <button class="btn-icone" (click)="abrirModalPerdido($event)">
+        <i class="bi bi-arrow-left-right text-primary"></i>
+      </button>
+      <button class="btn-icone" (click)="abrirModalPerdido($event)">
+        <i class="bi bi-x-circle text-danger"></i>
+      </button>
+      <button class="btn-icone" (click)="abrirModalPerdido($event)">
+        <i class="bi bi-check-circle text-success"></i>
       </button>
     </div>
   </div>
@@ -21,4 +26,32 @@
   <div class="linha">{{ card.servicoDesejado }}</div>
   <div class="linha">{{ card.valorNegocio }}</div>
   <div class="linha">Usuário: {{ card.criadoPor }}</div>
+</div>
+
+<!-- Modal Perdido Bootstrap -->
+<div class="modal fade" tabindex="-1" [ngClass]="{'show d-block': mostrarModal}" [style.backgroundColor]="'rgba(0,0,0,0.5)'" aria-modal="true" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Perdido</h5>
+        <button type="button" class="btn-close" aria-label="Close" (click)="fecharModal()"></button>
+      </div>
+      <div class="modal-body">
+        <label for="motivoPerda" class="form-label">Motivo da perda</label>
+        <select id="motivoPerda" class="form-select" [(ngModel)]="motivoPerda">
+          <option value="" disabled>Selecione um motivo</option>
+          <option value="Fechou com concorrente">Fechou com concorrente</option>
+          <option value="Preço fora da expectativa">Preço fora da expectativa</option>
+          <option value="Desistiu">Desistiu</option>
+        </select>
+
+        <label for="detalhesPerda" class="form-label mt-3">Mais detalhes</label>
+        <textarea id="detalhesPerda" class="form-control" rows="3" [(ngModel)]="detalhesPerda"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="fecharModal()">Cancelar</button>
+        <button type="button" class="btn btn-primary" (click)="salvarPerda()">Salvar</button>
+      </div>
+    </div>
+  </div>
 </div>
