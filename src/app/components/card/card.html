@@ -3,7 +3,8 @@
        'fundo-vermelho': statusCor === 'vermelho',
        'fundo-amarelo': statusCor === 'amarelo',
        'fundo-azul': statusCor === 'azul',
-       'fundo-cinza': statusCor === 'cinza'
+       'fundo-cinza': statusCor === 'cinza',
+       'card-finalizado': isFinalizado
      }"
      (click)="onClick()" tabindex="0">
 
@@ -16,7 +17,7 @@
       <button class="btn-icone" (click)="abrirModalPerdido($event)">
         <i class="bi bi-x-circle text-danger"></i>
       </button>
-      <button class="btn-icone" (click)="abrirModalPerdido($event)">
+      <button class="btn-icone" (click)="confirmarGanho($event)">
         <i class="bi bi-check-circle text-success"></i>
       </button>
     </div>

@@ -105,6 +105,13 @@
   transition: background-color 0.3s ease;
 }
 
+.fundo-azul {
+  background-color: #dcf4ff;
+  border: 1px solid #ffeeba;
+  box-shadow: 0 2px 6px rgba(133, 100, 4, 0.15);
+  transition: background-color 0.3s ease;
+}
+
 /* Botões e ícones restantes do seu CSS */
 .btn-primary {
   background-color: #0d6efd;
@@ -150,4 +157,13 @@ i[class^="icone-"]:hover {
   filter: brightness(0.85);
   cursor: pointer;
   transition: filter 0.3s ease;
+}
+
+.card-finalizado {
+  opacity: 0.5;
+  transition: opacity 0.3s;
+}
+
+.card-finalizado:hover {
+  opacity: 0.7; /* Leve destaque ao passar o mouse */
 }

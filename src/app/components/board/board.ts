@@ -19,13 +19,7 @@ interface Coluna {
   styleUrls: ['./board.css'],
 })
 export class BoardComponent implements OnInit {
-  colunas: Coluna[] = [
-    { titulo: 'Contato inicial', cards: [] },
-    { titulo: 'Orçamento enviado', cards: [] },
-    { titulo: 'Visita agendada', cards: [] },
-    { titulo: 'Demonstrou interesse', cards: [] },
-    { titulo: 'Negociação', cards: [] },
-  ];
+  colunas: Coluna[] = [];
 
   colunaVisivel = 0;
   isMobile = window.innerWidth < 768;
@@ -39,7 +33,21 @@ export class BoardComponent implements OnInit {
   touchStartX = 0;
   touchEndX = 0;
 
+  /** Carrega dados do localStorage ou usa padrão */
   ngOnInit(): void {
+    const salvas = localStorage.getItem('colunas');
+    if (salvas) {
+      this.colunas = JSON.parse(salvas);
+    } else {
+      this.colunas = [
+        { titulo: 'Contato inicial', cards: [] },
+        { titulo: 'Orçamento enviado', cards: [] },
+        { titulo: 'Visita agendada', cards: [] },
+        { titulo: 'Ganho', cards: [] },
+        { titulo: 'Perdido', cards: [] },
+      ];
+    }
+
     this.connectedColumnIds = this.colunas.map((_, idx) => idx.toString());
   }
 
@@ -70,22 +78,20 @@ export class BoardComponent implements OnInit {
     else this.avancarColuna();
   }
 
-  /** Avança coluna mobile */
   avancarColuna(): void {
     if (this.colunaVisivel < this.colunas.length - 1) this.colunaVisivel++;
   }
 
-  /** Volta coluna mobile */
   voltarColuna(): void {
     if (this.colunaVisivel > 0) this.colunaVisivel--;
   }
 
-  /** Novo card na primeira coluna */
   onNovoCard(card: Card): void {
     this.colunas[0].cards.push(card);
+    this.salvarNoLocalStorage();
   }
 
-  /** Drag & drop de cards */
+  /** Drag & drop */
   onCardMovido(event: {
     previousIndex: number;
     currentIndex: number;
@@ -101,53 +107,103 @@ export class BoardComponent implements OnInit {
     }
 
     transferArrayItem(prevCol, currCol, event.previousIndex, event.currentIndex);
+    this.salvarNoLocalStorage();
   }
 
-  /** Abre modal de histórico */
   abrirHistorico(card: Card): void {
     this.cardSelecionado = card;
     this.historicoModalAberto = true;
   }
 
-  /** Fecha modal de histórico */
   fecharHistorico(): void {
     this.historicoModalAberto = false;
     this.cardSelecionado = null;
   }
 
-  /** Salva alterações do histórico */
   salvarHistorico(cardAtualizado: Card): void {
     if (!cardAtualizado) return;
+
     this.colunas.forEach(coluna => {
       const idx = coluna.cards.findIndex(c => c.id === cardAtualizado.id);
       if (idx !== -1) coluna.cards[idx] = cardAtualizado;
     });
+
+    this.salvarNoLocalStorage();
   }
 
-  /** Editar card (abre modal de edição ou dados) */
   abrirEdicao(card: Card): void {
     console.log('Abrir edição para', card);
   }
 
-  /** Excluir card com confirmação */
   confirmarExclusao(card: Card): void {
     if (!confirm(`Deseja realmente excluir o negócio "${card.negocio}"?`)) return;
+
     this.colunas.forEach(coluna => {
       coluna.cards = coluna.cards.filter(c => c.id !== card.id);
     });
+
+    this.salvarNoLocalStorage();
   }
 
-  criarColuna(titulo: string) {
-  this.colunas.push({ titulo, cards: [] });
+  criarColuna(titulo: string): void {
+  const novaColuna = { titulo, cards: [] };
+
+  // Encontrar índice da coluna "Ganho"
+  const indexGanho = this.colunas.findIndex(c => c.titulo.toLowerCase() === 'ganho');
+
+  // Inserir antes de "Ganho", ou ao final se "Ganho" não for encontrada
+  const indexInsercao = indexGanho !== -1 ? indexGanho : this.colunas.length;
+
+  this.colunas.splice(indexInsercao, 0, novaColuna);
+
   this.connectedColumnIds = this.colunas.map((_, idx) => idx.toString());
+  this.salvarNoLocalStorage();
 }
 
-removerColuna(index: number): void {
-  this.colunas.splice(index, 1);
-  this.connectedColumnIds = this.colunas.map((_, idx) => idx.toString());
-}
 
-atualizarTituloColuna(event: { index: number; titulo: string }): void {
-  this.colunas[event.index].titulo = event.titulo;
-}
+  removerColuna(index: number): void {
+    this.colunas.splice(index, 1);
+    this.connectedColumnIds = this.colunas.map((_, idx) => idx.toString());
+    this.salvarNoLocalStorage();
+  }
+
+  atualizarTituloColuna(event: { index: number; titulo: string }): void {
+    this.colunas[event.index].titulo = event.titulo;
+    this.salvarNoLocalStorage();
+  }
+
+  moverParaPerdido(event: { card: Card; motivo: string; detalhes: string }): void {
+    const { card } = event;
+
+    this.colunas.forEach(coluna => {
+      coluna.cards = coluna.cards.filter(c => c.id !== card.id);
+    });
+
+    const colunaPerdido = this.colunas.find(c => c.titulo.toLowerCase() === 'perdido');
+    if (colunaPerdido) {
+      colunaPerdido.cards.push(card);
+      this.salvarNoLocalStorage();
+    } else {
+      console.warn('Coluna "Perdido" não encontrada!');
+    }
+  }
+
+  moverParaGanho(card: Card): void {
+    this.colunas.forEach(coluna => {
+      coluna.cards = coluna.cards.filter(c => c.id !== card.id);
+    });
+
+    const colunaGanho = this.colunas.find(c => c.titulo.toLowerCase() === 'ganho');
+    if (colunaGanho) {
+      colunaGanho.cards.push(card);
+      this.salvarNoLocalStorage();
+    } else {
+      console.warn('Coluna "Ganho" não encontrada!');
+    }
+  }
+
+  /** Persistência */
+  private salvarNoLocalStorage(): void {
+    localStorage.setItem('colunas', JSON.stringify(this.colunas));
+  }
 }

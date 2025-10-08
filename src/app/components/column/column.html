@@ -1,7 +1,16 @@
-<div class="columns">
+<div class="columns"
+     [ngClass]="{
+       'coluna-ganho': title.toLowerCase() === 'ganho',
+       'coluna-perdido': title.toLowerCase() === 'perdido'
+     }">
+
   <div class="d-flex justify-content-center align-items-center position-relative mb-2">
-    <!-- Título normal -->
-    <h6 *ngIf="!editandoTitulo" class="mb-0">{{ title }}</h6>
+    <!-- Título com ícones -->
+    <h6 *ngIf="!editandoTitulo" class="mb-0">
+      <i *ngIf="title.toLowerCase() === 'ganho'" class="bi bi-check-circle-fill text-success me-1"></i>
+      <i *ngIf="title.toLowerCase() === 'perdido'" class="bi bi-x-circle-fill text-danger me-1"></i>
+      {{ title }}
+    </h6>
 
     <!-- Campo de edição -->
     <div *ngIf="editandoTitulo" class="d-flex align-items-center w-100">
@@ -17,8 +26,8 @@
       </button>
     </div>
 
-    <!-- Ícone de engrenagem -->
-    <div class="dropdown ms-2" *ngIf="!editandoTitulo">
+    <!-- Ícone de engrenagem (oculto para ganho/perdido) -->
+    <div class="dropdown ms-2" *ngIf="!editandoTitulo && !colunaProtegida">
       <button class="btn btn-sm btn-light" type="button" data-bs-toggle="dropdown" aria-expanded="false">
         <i class="bi bi-gear"></i>
       </button>
@@ -33,20 +42,42 @@
     </div>
   </div>
 
-  <div cdkDropList
-       [cdkDropListData]="cards"
-       [cdkDropListConnectedTo]="connectedTo"
-       [id]="index.toString()"
-       class="dropzone"
-       (cdkDropListDropped)="drop($event)">
+  <!-- Dropzone ativa apenas se não for 'Ganho' ou 'Perdido' -->
+  <ng-container *ngIf="!colunaProtegida; else colunaSomenteLeitura">
+    <div cdkDropList
+         [cdkDropListData]="cards"
+         [cdkDropListConnectedTo]="connectedTo"
+         [id]="index.toString()"
+         class="dropzone"
+         (cdkDropListDropped)="drop($event)">
 
-    <div *ngFor="let card of cards; trackBy: trackById" cdkDrag>
-      <app-card
-        [card]="card"
-        (cardClicked)="onCardClick(card)"
-        (editarCard)="onEditarCard(card)"
-        (excluirCard)="onExcluirCard(card)">
-      </app-card>
+      <div *ngFor="let card of cards; trackBy: trackById" cdkDrag>
+        <app-card
+          [card]="card"
+          (cardClicked)="onCardClick(card)"
+          (editarCard)="onEditarCard(card)"
+          (excluirCard)="onExcluirCard(card)"
+          (marcarComoPerdido)="onCardPerdido($event)"
+          (marcarComoGanho)="onCardGanho($event)">
+        </app-card>
+      </div>
     </div>
-  </div>
+  </ng-container>
+
+  <!-- Coluna protegida: leitura apenas, sem drag -->
+  <ng-template #colunaSomenteLeitura>
+    <div class="dropzone">
+      <div *ngFor="let card of cards; trackBy: trackById">
+        <app-card
+          [card]="card"
+          [colunaTitulo]="title"
+          (cardClicked)="onCardClick(card)"
+          (editarCard)="onEditarCard(card)"
+          (excluirCard)="onExcluirCard(card)"
+          (marcarComoPerdido)="onCardPerdido($event)"
+          (marcarComoGanho)="onCardGanho($event)">
+        </app-card>
+      </div>
+    </div>
+  </ng-template>
 </div>

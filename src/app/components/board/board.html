@@ -36,6 +36,8 @@
   (cardMoved)="onCardMovido($event)"
   (cardClicked)="abrirHistorico($event)"
   (editarCard)="abrirEdicao($event)"
+  (cardPerdido)="moverParaPerdido($event)"
+  (cardGanho)="moverParaGanho($event)"
   (excluirCard)="confirmarExclusao($event)"
   (excluirColunaEvent)="removerColuna($event)"
   (tituloEditado)="atualizarTituloColuna($event)">

@@ -24,6 +24,10 @@ export class ColumnComponent {
   @Output() excluirCard = new EventEmitter<Card>();
   @Output() excluirColunaEvent = new EventEmitter<number>();
   @Output() tituloEditado = new EventEmitter<{ index: number; titulo: string }>();
+  @Output() cardPerdido = new EventEmitter<{ card: Card; motivo: string; detalhes: string }>();
+  @Output() cardGanho = new EventEmitter<Card>();
+
+
 
   // Controle edição de título
   editandoTitulo = false;
@@ -71,4 +75,18 @@ confirmarEdicaoTitulo() {
       this.excluirColunaEvent.emit(this.index); // 🔹 envia pro Board
     }
   }
+
+  onCardPerdido(event: { card: Card; motivo: string; detalhes: string }) {
+  this.cardPerdido.emit(event);
+}
+
+onCardGanho(card: Card) {
+  this.cardGanho.emit(card);
+}
+
+get colunaProtegida(): boolean {
+  const titulo = this.title.toLowerCase();
+  return titulo === 'ganho' || titulo === 'perdido';
+}
+
 }

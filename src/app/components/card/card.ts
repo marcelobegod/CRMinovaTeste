@@ -14,7 +14,8 @@ export class CardComponent {
   @Input() card!: Card;
 
   @Output() cardClicked = new EventEmitter<Card>();
-  @Output() excluirCard = new EventEmitter<{ card: Card; motivo: string; detalhes: string }>();
+  @Output() marcarComoPerdido = new EventEmitter<{ card: Card; motivo: string; detalhes: string }>();
+  @Output() marcarComoGanho = new EventEmitter<Card>();
 
   motivoPerda: string = '';
   detalhesPerda: string = '';
@@ -46,22 +47,36 @@ export class CardComponent {
 
   // Ao clicar no botão da lixeira, abrir modal
   abrirModalPerdido(event: MouseEvent): void {
-    event.stopPropagation();
-    this.motivoPerda = '';
-    this.detalhesPerda = '';
-    this.mostrarModal = true;
-  }
+  event.stopPropagation();
+  this.motivoPerda = '';
+  this.detalhesPerda = '';
+  this.mostrarModal = true;
+}
 
   fecharModal(): void {
     this.mostrarModal = false;
   }
 
   salvarPerda(): void {
-    if (!this.motivoPerda) {
-      alert('Por favor, selecione um motivo da perda.');
-      return;
-    }
-    this.excluirCard.emit({ card: this.card, motivo: this.motivoPerda, detalhes: this.detalhesPerda });
-    this.fecharModal();
+  if (!this.motivoPerda) {
+    alert('Por favor, selecione um motivo da perda.');
+    return;
   }
+  this.marcarComoPerdido.emit({ card: this.card, motivo: this.motivoPerda, detalhes: this.detalhesPerda });
+  this.fecharModal();
+}
+
+confirmarGanho(event: MouseEvent): void {
+  event.stopPropagation();
+  if (confirm(`Deseja realmente marcar o negócio "${this.card.negocio}" como GANHO?`)) {
+    this.marcarComoGanho.emit(this.card);
+  }
+}
+
+@Input() colunaTitulo: string = '';
+
+get isFinalizado(): boolean {
+  const titulo = this.colunaTitulo.toLowerCase();
+  return titulo === 'ganho' || titulo === 'perdido';
+}
 }

@@ -13,7 +13,7 @@ h6 {
   font-weight: 700;
   text-align: center;
   color: #343a40;
-  margin-top: 5px;
+  margin-top: 15px;
 }
 
 /* Dropzone = área branca da coluna onde os cards vão */
@@ -23,7 +23,6 @@ h6 {
   flex-grow: 1; /* ocupa o restante da coluna */
   display: flex;
   flex-direction: column;
-
   overflow-y: auto;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
@@ -41,4 +40,14 @@ h6 {
 
 .dropdown-menu {
   font-size: 0.875rem;
+}
+
+.coluna-ganho {
+  background-color: #e6ffed;
+  border-left: 5px solid #28a745;
+}
+
+.coluna-perdido {
+  background-color: #ffe6e6;
+  border-left: 5px solid #dc3545;
 }
